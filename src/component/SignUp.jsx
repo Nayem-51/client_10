@@ -7,32 +7,61 @@ function SignUp() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    photoURL: '',
     password: '',
     confirmPassword: ''
   });
   const [error, setError] = useState('');
+  const [passwordErrors, setPasswordErrors] = useState([]);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: value
     });
+
+    // Real-time password validation
+    if (name === 'password') {
+      validatePassword(value);
+    }
+  };
+
+  const validatePassword = (password) => {
+    const errors = [];
+    
+    if (password.length < 6) {
+      errors.push('Password must be at least 6 characters long');
+    }
+    
+    if (!/[A-Z]/.test(password)) {
+      errors.push('Password must contain at least one uppercase letter');
+    }
+    
+    if (!/[a-z]/.test(password)) {
+      errors.push('Password must contain at least one lowercase letter');
+    }
+    
+    setPasswordErrors(errors);
+    return errors.length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+    // Validate password
+    if (!validatePassword(formData.password)) {
+      setError('Please fix the password errors below');
       return;
     }
 
-    if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters long');
+    // Check if passwords match
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
       return;
     }
 
@@ -47,13 +76,22 @@ function SignUp() {
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
+          photoURL: formData.photoURL,
           password: formData.password
         }),
       });
 
       if (response.ok) {
-        alert('Account created successfully! Please login.');
-        navigate('/signin');
+        const data = await response.json();
+        // Store user data
+        localStorage.setItem('token', data.token || 'user-token');
+        localStorage.setItem('user', JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          image: formData.photoURL
+        }));
+        // Navigate to home page
+        navigate('/');
       } else {
         const data = await response.json();
         setError(data.message || 'Registration failed');
@@ -172,18 +210,51 @@ function SignUp() {
 
             <div className="form-control mt-4">
               <label className="label">
+                <span className="label-text font-semibold">Photo URL</span>
+              </label>
+              <input
+                type="url"
+                name="photoURL"
+                placeholder="Enter your photo URL (optional)"
+                className="input input-bordered w-full"
+                value={formData.photoURL}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-control mt-4">
+              <label className="label">
                 <span className="label-text font-semibold">Password</span>
               </label>
               <input
                 type="password"
                 name="password"
-                placeholder="Enter password (min 6 characters)"
+                placeholder="Enter password"
                 className="input input-bordered w-full"
                 value={formData.password}
                 onChange={handleChange}
                 required
-                minLength="6"
               />
+              {passwordErrors.length > 0 && (
+                <div className="mt-2 space-y-1">
+                  {passwordErrors.map((err, index) => (
+                    <p key={index} className="text-xs text-error flex items-center gap-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                      </svg>
+                      {err}
+                    </p>
+                  ))}
+                </div>
+              )}
+              {passwordErrors.length === 0 && formData.password && (
+                <p className="text-xs text-success mt-2 flex items-center gap-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  Password is valid
+                </p>
+              )}
             </div>
 
             <div className="form-control mt-4">

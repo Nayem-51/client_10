@@ -61,23 +61,51 @@ const Root = () => {
               <span className="text-sm hidden md:inline">Welcome, {user.name || user.email}!</span>
               <div className="dropdown dropdown-end">
                 <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-                  <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                  <div className="w-10 h-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 overflow-hidden">
                     {user.image ? (
-                      <img src={user.image} alt={user.name} />
+                      <img 
+                        src={user.image} 
+                        alt={user.name || 'User'} 
+                        className="w-full h-full object-cover"
+                        referrerPolicy="no-referrer"
+                      />
                     ) : (
                       <div className="bg-primary text-primary-content w-full h-full flex items-center justify-center text-xl font-bold">
-                        {user.name?.charAt(0).toUpperCase() || 'U'}
+                        {user.name?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || 'U'}
                       </div>
                     )}
                   </div>
                 </label>
-                <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-1 p-2 shadow bg-base-100 rounded-box w-52">
-                  <li className="menu-title">
-                    <span>{user.name || user.email}</span>
+                <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-64">
+                  <li className="menu-title px-4 py-3">
+                    <div className="flex items-center gap-3">
+                      <div className="avatar">
+                        <div className="w-12 h-12 rounded-full overflow-hidden">
+                          {user.image ? (
+                            <img 
+                              src={user.image} 
+                              alt={user.name || 'User'} 
+                              className="w-full h-full object-cover"
+                              referrerPolicy="no-referrer"
+                            />
+                          ) : (
+                            <div className="bg-primary text-primary-content w-full h-full flex items-center justify-center text-lg font-bold">
+                              {user.name?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || 'U'}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="font-semibold text-base">{user.name || user.email?.split('@')[0]}</span>
+                        <span className="text-xs opacity-60 truncate max-w-[150px]">{user.email}</span>
+                      </div>
+                    </div>
                   </li>
+                  <div className="divider my-0"></div>
                   <li><Link to="/profile">Profile</Link></li>
                   <li><Link to="/my-exports">My Exports</Link></li>
                   <li><Link to="/my-imports">My Imports</Link></li>
+                  <div className="divider my-0"></div>
                   <li><button onClick={handleLogout} className="text-error">Logout</button></li>
                 </ul>
               </div>
