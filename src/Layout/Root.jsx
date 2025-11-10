@@ -168,82 +168,109 @@ const Root = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-base-100 text-base-content mt-8">
-        <div className="footer p-10 container mx-auto">
-          {/* Company Info */}
-          <nav>
-            <h6 className="footer-title">About Export Hub</h6>
-            <p className="max-w-xs text-sm">
-              Your trusted platform for managing global exports and imports. 
-              Connecting businesses worldwide with seamless trade solutions.
-            </p>
-            <div className="flex gap-2 mt-2">
-              <span className="text-primary">📦</span>
-              <span className="text-sm font-semibold">Export Hub</span>
+      <footer className="bg-base-100 text-base-content mt-12">
+        {/* Main Footer Content */}
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+            
+            {/* Company Info */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-3xl">📦</span>
+                <h3 className="text-xl font-bold text-primary">Export Hub</h3>
+              </div>
+              <p className="text-sm leading-relaxed opacity-80">
+                Your trusted platform for managing global exports and imports. 
+                Connecting businesses worldwide with seamless trade solutions.
+              </p>
             </div>
-          </nav>
 
-          {/* Quick Links */}
-          <nav>
-            <h6 className="footer-title">Quick Links</h6>
-            <Link to="/all-products" className="link link-hover">All Products</Link>
-            <Link to="/my-exports" className="link link-hover">My Exports</Link>
-            <Link to="/my-imports" className="link link-hover">My Imports</Link>
-            <Link to="/add-export" className="link link-hover">Add Export</Link>
-          </nav>
-
-          {/* Support */}
-          <nav>
-            <h6 className="footer-title">Support</h6>
-            <a className="link link-hover">Help Center</a>
-            <a className="link link-hover">Terms of Service</a>
-            <a className="link link-hover">Privacy Policy</a>
-            <a className="link link-hover">FAQ</a>
-          </nav>
-
-          {/* Contact Info */}
-          <nav>
-            <h6 className="footer-title">Contact Us</h6>
-            <div className="flex flex-col gap-2">
-              <a className="link link-hover flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                info@exporthub.com
-              </a>
-              <a className="link link-hover flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
-                +880 1234-567890
-              </a>
-              <a className="link link-hover flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                Dhaka, Bangladesh
-              </a>
+            {/* Quick Links */}
+            <div className="space-y-4">
+              <h6 className="text-base font-bold uppercase tracking-wider">Quick Links</h6>
+              <nav className="flex flex-col space-y-2">
+                <Link to="/all-products" className="link link-hover text-sm hover:text-primary transition-colors">
+                  All Products
+                </Link>
+                <Link to="/my-exports" className="link link-hover text-sm hover:text-primary transition-colors">
+                  My Exports
+                </Link>
+                <Link to="/my-imports" className="link link-hover text-sm hover:text-primary transition-colors">
+                  My Imports
+                </Link>
+                <Link to="/add-export" className="link link-hover text-sm hover:text-primary transition-colors">
+                  Add Export
+                </Link>
+              </nav>
             </div>
-          </nav>
+
+            {/* Support */}
+            <div className="space-y-4">
+              <h6 className="text-base font-bold uppercase tracking-wider">Support</h6>
+              <nav className="flex flex-col space-y-2">
+                <a className="link link-hover text-sm hover:text-primary transition-colors">Help Center</a>
+                <a className="link link-hover text-sm hover:text-primary transition-colors">Terms of Service</a>
+                <a className="link link-hover text-sm hover:text-primary transition-colors">Privacy Policy</a>
+                <a className="link link-hover text-sm hover:text-primary transition-colors">FAQ</a>
+              </nav>
+            </div>
+
+            {/* Contact Info */}
+            <div className="space-y-4">
+              <h6 className="text-base font-bold uppercase tracking-wider">Contact Us</h6>
+              <div className="flex flex-col space-y-3">
+                <a href="mailto:info@exporthub.com" className="flex items-center gap-3 text-sm hover:text-primary transition-colors group">
+                  <div className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <span>info@exporthub.com</span>
+                </a>
+                <a href="tel:+8801234567890" className="flex items-center gap-3 text-sm hover:text-primary transition-colors group">
+                  <div className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                  </div>
+                  <span>+880 1234-567890</span>
+                </a>
+                <div className="flex items-center gap-3 text-sm">
+                  <div className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </div>
+                  <span>Dhaka, Bangladesh</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Bottom Bar with Social Links and Copyright */}
-        <div className="border-t border-base-300">
-          <div className="container mx-auto px-10 py-6">
+        <div className="border-t border-base-300 bg-base-200/50">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+              
               {/* Copyright */}
-              <div className="text-sm text-center md:text-left">
-                <p>Copyright © {new Date().getFullYear()} - Export Hub. All rights reserved.</p>
+              <div className="text-sm text-center md:text-left order-2 md:order-1">
+                <p className="opacity-80">
+                  Copyright © {new Date().getFullYear()} 
+                  <span className="font-semibold text-primary mx-1">Export Hub</span>
+                  - All rights reserved.
+                </p>
               </div>
 
               {/* Social Links */}
-              <div className="flex gap-4">
+              <div className="flex items-center gap-2 order-1 md:order-2">
+                <span className="text-sm font-medium mr-2 hidden sm:inline">Follow Us:</span>
                 <a 
                   href="https://facebook.com" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="btn btn-ghost btn-sm btn-circle hover:text-primary"
+                  className="btn btn-ghost btn-sm btn-circle hover:bg-primary hover:text-primary-content transition-all"
                   aria-label="Facebook"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
@@ -254,7 +281,7 @@ const Root = () => {
                   href="https://twitter.com" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="btn btn-ghost btn-sm btn-circle hover:text-primary"
+                  className="btn btn-ghost btn-sm btn-circle hover:bg-primary hover:text-primary-content transition-all"
                   aria-label="Twitter"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
@@ -265,7 +292,7 @@ const Root = () => {
                   href="https://linkedin.com" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="btn btn-ghost btn-sm btn-circle hover:text-primary"
+                  className="btn btn-ghost btn-sm btn-circle hover:bg-primary hover:text-primary-content transition-all"
                   aria-label="LinkedIn"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
@@ -276,7 +303,7 @@ const Root = () => {
                   href="https://instagram.com" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="btn btn-ghost btn-sm btn-circle hover:text-primary"
+                  className="btn btn-ghost btn-sm btn-circle hover:bg-primary hover:text-primary-content transition-all"
                   aria-label="Instagram"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
@@ -287,7 +314,7 @@ const Root = () => {
                   href="https://youtube.com" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="btn btn-ghost btn-sm btn-circle hover:text-primary"
+                  className="btn btn-ghost btn-sm btn-circle hover:bg-primary hover:text-primary-content transition-all"
                   aria-label="YouTube"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
