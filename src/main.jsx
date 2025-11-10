@@ -8,6 +8,7 @@ import AllProducts from './pages/AllProducts.jsx'
 import MyExports from './pages/MyExports.jsx'
 import MyImports from './pages/MyImports.jsx'
 import AddExport from './pages/AddExport.jsx'
+import ProductDetails from './pages/ProductDetails.jsx'
 import SignIn from './component/SignIn.jsx'
 import SignUp from './component/SignUp.jsx'
 
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "/add-export",
         element: <AddExport />,
+      },
+      {
+        path: "/product/:id",
+        element: <ProductDetails />,
       },
       {
         path: "/signin",
