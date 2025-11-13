@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '../firebase/firebase.init';
 
@@ -12,6 +12,8 @@ function SignIn() {
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
 
   useEffect(() => {
     document.title = 'Sign In - Export Hub';
@@ -42,7 +44,7 @@ function SignIn() {
         const data = await response.json();
         localStorage.setItem('token', data.token || 'dummy-token');
         localStorage.setItem('user', JSON.stringify(data.user || { email: formData.email, name: formData.email.split('@')[0] }));
-        navigate('/');
+        navigate(from, { replace: true });
       } else {
         const data = await response.json();
         setError(data.message || 'Invalid email or password');
@@ -101,8 +103,8 @@ function SignIn() {
         console.log('Backend registration (optional):', backendError);
       }
       
-      console.log('Navigating to home...');
-      navigate('/');
+      console.log('Navigating to:', from);
+      navigate(from, { replace: true });
     } catch (err) {
       console.error('Google sign-in error details:', {
         code: err.code,

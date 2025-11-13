@@ -11,6 +11,7 @@ import AddExport from './pages/AddExport.jsx'
 import ProductDetails from './pages/ProductDetails.jsx'
 import SignIn from './component/SignIn.jsx'
 import SignUp from './component/SignUp.jsx'
+import PrivateRoute from './component/PrivateRoute.jsx'
 
 const router = createBrowserRouter([
   {
@@ -27,19 +28,19 @@ const router = createBrowserRouter([
       },
       {
         path: "/my-exports",
-        element: <MyExports />,
+        element: <PrivateRoute><MyExports /></PrivateRoute>,
       },
       {
         path: "/my-imports",
-        element: <MyImports />,
+        element: <PrivateRoute><MyImports /></PrivateRoute>,
       },
       {
         path: "/add-export",
-        element: <AddExport />,
+        element: <PrivateRoute><AddExport /></PrivateRoute>,
       },
       {
         path: "/product/:id",
-        element: <ProductDetails />,
+        element: <PrivateRoute><ProductDetails /></PrivateRoute>,
       },
       {
         path: "/signin",

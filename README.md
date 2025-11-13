@@ -1,16 +1,47 @@
-# React + Vite
+# 🌍 Import Export Hub (Client Side)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern web platform where users can **manage exports, browse global products, and import any product** into their personal "My Imports" section — all with a single click!  
+Built using **React, Tailwind CSS, Firebase, and MongoDB** for a seamless, responsive, and secure experience.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Live Demo
 
-## React Compiler
+🟢 **Live Site:** [Import Export Hub - Netlify](https://kaleidoscopic-rabanadas-9d9f29.netlify.app/)  
+🟢 **Server API:** [Backend Hosted on Vercel](https://server-10-livid.vercel.app/)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🧠 Project Overview
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 🎯 Features
+- 🔐 User Authentication (Email & Google Sign-in via Firebase)
+- 🧾 Export & Import Management
+- 🛒 "My Imports" section with real-time updates
+- 🧭 Dynamic Routing using React Router
+- 🌙 Light/Dark Mode toggle
+- 🔍 Search functionality on "All Products"
+- 📊 Sort by recent products on the Home page
+- 🧮 CSV export option for “My Exports”
+- 🧠 Dynamic Page Titles
+- 📱 Fully Responsive UI (Mobile, Tablet & Desktop)
+
+---
+
+## ⚙️ Technologies Used
+
+| Category | Tools & Libraries |
+|-----------|------------------|
+| **Frontend Framework** | React JS |
+| **Styling** | Tailwind CSS |
+| **Routing** | React Router DOM |
+| **State Management** | React Hooks, Context API |
+| **Notifications** | React Toastify |
+| **Authentication** | Firebase Auth |
+| **Backend Connection** | Axios |
+| **Deployment** | Netlify |
+
+---
+
+## 📁 Folder Structure
+
