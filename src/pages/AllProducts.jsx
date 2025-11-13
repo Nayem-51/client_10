@@ -117,8 +117,8 @@ function AllProducts() {
           {/* Products Grid - 3 Column Layout */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {products.map((product) => (
-              <div key={product._id} className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
-                <figure className="h-48 overflow-hidden bg-base-300">
+              <div key={product._id} className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow h-full flex flex-col">
+                <figure className="h-48 overflow-hidden bg-base-300 flex-shrink-0">
                   {(product.productImage || product.image) ? (
                     <img 
                       src={product.productImage || product.image} 
@@ -135,7 +135,7 @@ function AllProducts() {
                     </div>
                   )}
                 </figure>
-                <div className="card-body p-4">
+                <div className="card-body p-4 flex flex-col flex-grow">
                   <h2 className="card-title text-base">
                     {product.productName || product.name}
                     {product.availableQuantity < 10 && (
@@ -174,7 +174,7 @@ function AllProducts() {
                     </div>
                   </div>
                   
-                  <div className="card-actions justify-end mt-3">
+                  <div className="card-actions justify-end mt-auto">
                     <Link 
                       to={`/product/${product._id}`} 
                       className="btn btn-primary btn-sm w-full"

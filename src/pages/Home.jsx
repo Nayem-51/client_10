@@ -151,8 +151,8 @@ function Home() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {products.map((product) => (
-              <div key={product._id} className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
-                <figure className="h-48 overflow-hidden bg-base-300">
+              <div key={product._id} className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow h-full flex flex-col">
+                <figure className="h-48 overflow-hidden bg-base-300 flex-shrink-0">
                   {(product.productImage || product.image) ? (
                     <img 
                       src={product.productImage || product.image} 
@@ -169,7 +169,7 @@ function Home() {
                     </div>
                   )}
                 </figure>
-                <div className="card-body">
+                <div className="card-body flex flex-col flex-grow">
                   <h2 className="card-title text-lg">
                     {product.productName || product.name}
                     {product.availableQuantity < 10 && (
@@ -208,7 +208,7 @@ function Home() {
                     </div>
                   </div>
                   
-                  <div className="card-actions justify-end mt-4">
+                  <div className="card-actions justify-end mt-auto">
                     <Link 
                       to={`/product/${product._id}`} 
                       className="btn btn-primary btn-sm w-full"
@@ -231,7 +231,7 @@ function Home() {
         </div>
         
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 px-4">
-          <div className="card bg-base-100 shadow-lg hover:shadow-xl transition-all cursor-pointer hover:scale-105">
+          <div className="card bg-base-100 shadow-lg hover:shadow-xl transition-all cursor-pointer hover:scale-105 h-full">
             <div className="card-body items-center text-center p-6">
               <div className="text-5xl mb-3">🍎</div>
               <h3 className="card-title text-lg">Food & Beverages</h3>
@@ -239,7 +239,7 @@ function Home() {
             </div>
           </div>
 
-          <div className="card bg-base-100 shadow-lg hover:shadow-xl transition-all cursor-pointer hover:scale-105">
+          <div className="card bg-base-100 shadow-lg hover:shadow-xl transition-all cursor-pointer hover:scale-105 h-full">
             <div className="card-body items-center text-center p-6">
               <div className="text-5xl mb-3">👕</div>
               <h3 className="card-title text-lg">Textiles</h3>
@@ -247,7 +247,7 @@ function Home() {
             </div>
           </div>
 
-          <div className="card bg-base-100 shadow-lg hover:shadow-xl transition-all cursor-pointer hover:scale-105">
+          <div className="card bg-base-100 shadow-lg hover:shadow-xl transition-all cursor-pointer hover:scale-105 h-full">
             <div className="card-body items-center text-center p-6">
               <div className="text-5xl mb-3">💻</div>
               <h3 className="card-title text-lg">Electronics</h3>
@@ -255,7 +255,7 @@ function Home() {
             </div>
           </div>
 
-          <div className="card bg-base-100 shadow-lg hover:shadow-xl transition-all cursor-pointer hover:scale-105">
+          <div className="card bg-base-100 shadow-lg hover:shadow-xl transition-all cursor-pointer hover:scale-105 h-full">
             <div className="card-body items-center text-center p-6">
               <div className="text-5xl mb-3">🛠️</div>
               <h3 className="card-title text-lg">Industrial</h3>
