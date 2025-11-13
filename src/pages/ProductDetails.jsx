@@ -7,6 +7,8 @@ function ProductDetails() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [importQuantity, setImportQuantity] = useState(1);
+  const [importing, setImporting] = useState(false);
 
   useEffect(() => {
     fetchProductDetails();
@@ -16,8 +18,8 @@ function ProductDetails() {
     try {
       const response = await fetch(`http://localhost:3000/products/${id}`);
       if (response.ok) {
-        const data = await response.json();
-        setProduct(data);
+        const result = await response.json();
+        setProduct(result.data || result);
       } else {
         setError('Product not found');
       }
@@ -26,6 +28,60 @@ function ProductDetails() {
       setError('Failed to load product details');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleImport = async () => {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    
+    if (!user.email) {
+      alert('Please login first to import products');
+      navigate('/signin');
+      return;
+    }
+
+    if (importQuantity < 1 || importQuantity > product.availableQuantity) {
+      alert(`Please enter a valid quantity between 1 and ${product.availableQuantity}`);
+      return;
+    }
+
+    setImporting(true);
+    
+    try {
+      const importData = {
+        productId: product._id,
+        productName: product.productName,
+        productImage: product.productImage,
+        price: product.price,
+        rating: product.rating,
+        originCountry: product.originCountry,
+        importedQuantity: importQuantity,
+        userEmail: user.email,
+        userName: user.name
+      };
+
+      const response = await fetch('http://localhost:3000/imports', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(importData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('Product imported successfully!');
+        fetchProductDetails(); // Refresh to show updated quantity
+        setImportQuantity(1);
+      } else {
+        alert(data.error || 'Failed to import product');
+      }
+    } catch (err) {
+      console.error('Error importing product:', err);
+      alert('Network error. Please try again.');
+    } finally {
+      setImporting(false);
     }
   };
 
@@ -89,7 +145,7 @@ function ProductDetails() {
         <ul>
           <li><Link to="/">Home</Link></li>
           <li><Link to="/all-products">Products</Link></li>
-          <li>{product.name}</li>
+          <li>{product.productName || product.name}</li>
         </ul>
       </div>
 
@@ -98,10 +154,10 @@ function ProductDetails() {
         {/* Product Image */}
         <div className="w-full">
           <figure className="rounded-lg overflow-hidden shadow-xl bg-base-300 h-96 lg:h-[500px]">
-            {product.image ? (
+            {(product.productImage || product.image) ? (
               <img 
-                src={product.image} 
-                alt={product.name}
+                src={product.productImage || product.image} 
+                alt={product.productName || product.name}
                 className="w-full h-full object-cover"
                 onError={(e) => {
                   e.target.onerror = null;
@@ -118,7 +174,7 @@ function ProductDetails() {
 
         {/* Product Information */}
         <div className="flex flex-col">
-          <h1 className="text-4xl font-bold mb-4">{product.name}</h1>
+          <h1 className="text-4xl font-bold mb-4">{product.productName || product.name}</h1>
           
           {/* Rating */}
           <div className="flex items-center gap-3 mb-4">
@@ -182,14 +238,59 @@ function ProductDetails() {
             </div>
           )}
 
+          {/* Import Section */}
+          <div className="bg-base-200 rounded-lg p-6 mb-6">
+            <h3 className="text-xl font-bold mb-4">Import This Product</h3>
+            <div className="flex items-end gap-4">
+              <div className="form-control flex-1">
+                <label className="label">
+                  <span className="label-text font-semibold">Quantity</span>
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  max={product.availableQuantity}
+                  value={importQuantity}
+                  onChange={(e) => setImportQuantity(parseInt(e.target.value) || 1)}
+                  className="input input-bordered w-full"
+                  disabled={product.availableQuantity === 0 || importing}
+                />
+              </div>
+              <button 
+                className="btn btn-primary flex-1"
+                onClick={handleImport}
+                disabled={product.availableQuantity === 0 || importing}
+              >
+                {importing ? (
+                  <>
+                    <span className="loading loading-spinner"></span>
+                    Importing...
+                  </>
+                ) : (
+                  <>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                    Import Now
+                  </>
+                )}
+              </button>
+            </div>
+            {product.availableQuantity === 0 && (
+              <div className="alert alert-warning mt-4">
+                <span>This product is currently out of stock</span>
+              </div>
+            )}
+          </div>
+
           {/* Action Buttons */}
           <div className="flex gap-4 mt-auto">
-            <button className="btn btn-primary flex-1">
+            <button className="btn btn-outline btn-primary flex-1">
               Contact Supplier
             </button>
-            <button className="btn btn-outline btn-primary">
-              Add to Wishlist
-            </button>
+            <Link to="/my-imports" className="btn btn-ghost">
+              View My Imports
+            </Link>
           </div>
         </div>
       </div>

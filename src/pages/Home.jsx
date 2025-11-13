@@ -153,10 +153,10 @@ function Home() {
             {products.map((product) => (
               <div key={product._id} className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
                 <figure className="h-48 overflow-hidden bg-base-300">
-                  {product.image ? (
+                  {(product.productImage || product.image) ? (
                     <img 
-                      src={product.image} 
-                      alt={product.name}
+                      src={product.productImage || product.image} 
+                      alt={product.productName || product.name}
                       className="w-full h-full object-cover"
                       onError={(e) => {
                         e.target.onerror = null;
@@ -171,7 +171,7 @@ function Home() {
                 </figure>
                 <div className="card-body">
                   <h2 className="card-title text-lg">
-                    {product.name}
+                    {product.productName || product.name}
                     {product.availableQuantity < 10 && (
                       <div className="badge badge-warning">Low Stock</div>
                     )}

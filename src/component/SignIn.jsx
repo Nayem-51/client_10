@@ -74,6 +74,26 @@ function SignIn() {
       localStorage.setItem('token', user.accessToken || 'google-auth-token');
       localStorage.setItem('user', JSON.stringify(userData));
       
+      // Save/Update user in backend database
+      try {
+        await fetch('http://localhost:3000/users', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
+            googleAuth: true,
+            uid: user.uid
+          }),
+        });
+      } catch (backendError) {
+        console.log('Backend registration info:', backendError);
+        // Continue even if backend fails - user is still logged in via Firebase
+      }
+      
       // Navigate to home page
       navigate('/');
     } catch (err) {

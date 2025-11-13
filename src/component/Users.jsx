@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
-
+const newUser={name,email};
+fetch("http://localhost:3000/users", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify( newUser ),
+});
 function Users() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);

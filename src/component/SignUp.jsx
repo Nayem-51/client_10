@@ -126,7 +126,7 @@ function SignUp() {
       localStorage.setItem('token', user.accessToken || 'google-auth-token');
       localStorage.setItem('user', JSON.stringify(userData));
       
-      // Optionally, send user data to backend
+      // Save user data to backend
       try {
         await fetch('http://localhost:3000/users', {
           method: 'POST',
@@ -136,12 +136,14 @@ function SignUp() {
           body: JSON.stringify({
             name: user.displayName,
             email: user.email,
+            photoURL: user.photoURL,
             googleAuth: true,
             uid: user.uid
           }),
         });
       } catch (backendError) {
-        console.log('Backend registration skipped:', backendError);
+        console.log('Backend registration info:', backendError);
+        // Continue even if backend fails - user is still registered via Firebase
       }
       
       // Navigate to home page
