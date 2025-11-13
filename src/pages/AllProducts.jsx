@@ -114,8 +114,8 @@ function AllProducts() {
         </div>
       ) : (
         <>
-          {/* Products Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {/* Products Grid - 3 Column Layout */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {products.map((product) => (
               <div key={product._id} className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
                 <figure className="h-48 overflow-hidden bg-base-300">

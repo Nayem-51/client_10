@@ -9,6 +9,7 @@ function ProductDetails() {
   const [error, setError] = useState('');
   const [importQuantity, setImportQuantity] = useState(1);
   const [importing, setImporting] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     fetchProductDetails();
@@ -31,7 +32,7 @@ function ProductDetails() {
     }
   };
 
-  const handleImport = async () => {
+  const openImportModal = () => {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     
     if (!user.email) {
@@ -40,6 +41,11 @@ function ProductDetails() {
       return;
     }
 
+    setImportQuantity(1); // Reset to 1 when opening modal
+    setShowModal(true);
+  };
+
+  const handleImport = async () => {
     if (importQuantity < 1 || importQuantity > product.availableQuantity) {
       alert(`Please enter a valid quantity between 1 and ${product.availableQuantity}`);
       return;
@@ -48,6 +54,8 @@ function ProductDetails() {
     setImporting(true);
     
     try {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      
       const importData = {
         productId: product._id,
         productName: product.productName,
@@ -72,6 +80,7 @@ function ProductDetails() {
 
       if (response.ok) {
         alert('Product imported successfully!');
+        setShowModal(false); // Close modal
         fetchProductDetails(); // Refresh to show updated quantity
         setImportQuantity(1);
       } else {
@@ -238,44 +247,22 @@ function ProductDetails() {
             </div>
           )}
 
-          {/* Import Section */}
+          {/* Import Button */}
           <div className="bg-base-200 rounded-lg p-6 mb-6">
-            <h3 className="text-xl font-bold mb-4">Import This Product</h3>
-            <div className="flex items-end gap-4">
-              <div className="form-control flex-1">
-                <label className="label">
-                  <span className="label-text font-semibold">Quantity</span>
-                </label>
-                <input
-                  type="number"
-                  min="1"
-                  max={product.availableQuantity}
-                  value={importQuantity}
-                  onChange={(e) => setImportQuantity(parseInt(e.target.value) || 1)}
-                  className="input input-bordered w-full"
-                  disabled={product.availableQuantity === 0 || importing}
-                />
-              </div>
-              <button 
-                className="btn btn-primary flex-1"
-                onClick={handleImport}
-                disabled={product.availableQuantity === 0 || importing}
-              >
-                {importing ? (
-                  <>
-                    <span className="loading loading-spinner"></span>
-                    Importing...
-                  </>
-                ) : (
-                  <>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                    Import Now
-                  </>
-                )}
-              </button>
-            </div>
+            <h3 className="text-xl font-bold mb-4">Want to Import This Product?</h3>
+            <p className="mb-4 opacity-80">
+              Available Quantity: <span className="font-bold text-primary">{product.availableQuantity} units</span>
+            </p>
+            <button 
+              className="btn btn-primary w-full"
+              onClick={openImportModal}
+              disabled={product.availableQuantity === 0}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+              Import Now
+            </button>
             {product.availableQuantity === 0 && (
               <div className="alert alert-warning mt-4">
                 <span>This product is currently out of stock</span>
@@ -320,6 +307,80 @@ function ProductDetails() {
           ← Back to Products
         </button>
       </div>
+
+      {/* Import Modal */}
+      {showModal && (
+        <dialog open className="modal modal-open">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg mb-4">Import Product</h3>
+            
+            <div className="mb-4">
+              <p className="text-sm opacity-70 mb-2">Product: <span className="font-semibold">{product.productName}</span></p>
+              <p className="text-sm opacity-70 mb-2">Price: <span className="font-semibold text-primary">${product.price}</span></p>
+              <p className="text-sm opacity-70 mb-4">Available: <span className="font-semibold text-success">{product.availableQuantity} units</span></p>
+            </div>
+
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-semibold">Enter Quantity to Import</span>
+              </label>
+              <input
+                type="number"
+                min="1"
+                max={product.availableQuantity}
+                value={importQuantity}
+                onChange={(e) => setImportQuantity(parseInt(e.target.value) || 1)}
+                className="input input-bordered w-full"
+                placeholder={`Max: ${product.availableQuantity}`}
+              />
+              <label className="label">
+                <span className="label-text-alt text-warning">
+                  ⚠️ You can import maximum {product.availableQuantity} units
+                </span>
+              </label>
+            </div>
+
+            {/* Import Limit Warning */}
+            {importQuantity > product.availableQuantity && (
+              <div className="alert alert-error mt-3">
+                <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>Quantity exceeds available stock! Maximum: {product.availableQuantity}</span>
+              </div>
+            )}
+
+            <div className="modal-action">
+              <button 
+                type="button"
+                className="btn btn-primary"
+                onClick={handleImport}
+                disabled={importing || importQuantity < 1 || importQuantity > product.availableQuantity}
+              >
+                {importing ? (
+                  <>
+                    <span className="loading loading-spinner"></span>
+                    Importing...
+                  </>
+                ) : (
+                  'Submit'
+                )}
+              </button>
+              <button 
+                type="button"
+                className="btn"
+                onClick={() => setShowModal(false)}
+                disabled={importing}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+          <form method="dialog" className="modal-backdrop">
+            <button onClick={() => setShowModal(false)}>close</button>
+          </form>
+        </dialog>
+      )}
     </div>
   );
 }

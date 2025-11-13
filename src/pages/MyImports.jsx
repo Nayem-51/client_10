@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 function MyImports() {
   const [imports, setImports] = useState([]);
@@ -88,12 +88,12 @@ function MyImports() {
             <thead>
               <tr>
                 <th>#</th>
-                <th>Product Name</th>
                 <th>Image</th>
+                <th>Product Name</th>
                 <th>Price</th>
-                <th>Quantity</th>
-                <th>Origin</th>
                 <th>Rating</th>
+                <th>Origin Country</th>
+                <th>Imported Quantity</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -101,7 +101,6 @@ function MyImports() {
               {imports.map((importItem, index) => (
                 <tr key={importItem._id}>
                   <th>{index + 1}</th>
-                  <td>{importItem.productName}</td>
                   <td>
                     <img 
                       src={importItem.productImage || 'https://via.placeholder.com/48x48?text=No+Image'} 
@@ -113,18 +112,27 @@ function MyImports() {
                       }}
                     />
                   </td>
-                  <td>${importItem.price}</td>
-                  <td>{importItem.importedQuantity}</td>
-                  <td>{importItem.originCountry}</td>
+                  <td className="font-semibold">{importItem.productName}</td>
+                  <td className="text-primary font-bold">${importItem.price}</td>
                   <td>⭐ {importItem.rating}</td>
+                  <td>{importItem.originCountry}</td>
                   <td>
-                    <div className="flex gap-2">
+                    <span className="badge badge-success">{importItem.importedQuantity} units</span>
+                  </td>
+                  <td>
+                    <div className="flex flex-col gap-2">
                       <button 
                         className="btn btn-xs btn-error"
                         onClick={() => handleRemove(importItem._id)}
                       >
                         Remove
                       </button>
+                      <Link 
+                        to={`/product/${importItem.productId}`}
+                        className="btn btn-xs btn-info"
+                      >
+                        See Details
+                      </Link>
                     </div>
                   </td>
                 </tr>
