@@ -8,6 +8,7 @@ function MyImports() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    document.title = 'My Imports - Export Hub';
     fetchMyImports();
   }, []);
 

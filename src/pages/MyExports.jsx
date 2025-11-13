@@ -9,6 +9,7 @@ function MyExports() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    document.title = 'My Exports - Export Hub';
     fetchMyExports();
   }, []);
 
@@ -100,6 +101,45 @@ function MyExports() {
     }
   };
 
+  const downloadCSV = () => {
+    if (products.length === 0) {
+      alert('No data to download');
+      return;
+    }
+
+    // Define CSV headers
+    const headers = ['Product Name', 'Price', 'Origin Country', 'Rating', 'Available Quantity', 'Product Image'];
+    
+    // Convert products to CSV rows
+    const csvRows = products.map(product => [
+      product.productName,
+      product.price,
+      product.originCountry,
+      product.rating,
+      product.availableQuantity,
+      product.productImage
+    ]);
+
+    // Combine headers and rows
+    const csvContent = [
+      headers.join(','),
+      ...csvRows.map(row => row.map(cell => `"${cell}"`).join(','))
+    ].join('\n');
+
+    // Create blob and download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', `my-exports-${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center py-12">
@@ -110,11 +150,26 @@ function MyExports() {
 
   return (
     <div className="py-6">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
         <h1 className="text-3xl font-bold">My Exports</h1>
-        <Link to="/add-export" className="btn btn-primary">
-          + Add New Export
-        </Link>
+        <div className="flex gap-2">
+          <button 
+            onClick={downloadCSV} 
+            className="btn btn-success btn-sm"
+            disabled={products.length === 0}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Download CSV
+          </button>
+          <Link to="/add-export" className="btn btn-primary btn-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+            Add New Export
+          </Link>
+        </div>
       </div>
 
       {error && (

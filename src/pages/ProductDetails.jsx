@@ -15,6 +15,14 @@ function ProductDetails() {
     fetchProductDetails();
   }, [id]);
 
+  useEffect(() => {
+    if (product) {
+      document.title = `${product.productName} - Export Hub`;
+    } else {
+      document.title = 'Product Details - Export Hub';
+    }
+  }, [product]);
+
   const fetchProductDetails = async () => {
     try {
       const response = await fetch(`http://localhost:3000/products/${id}`);

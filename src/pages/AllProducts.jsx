@@ -10,6 +10,10 @@ function AllProducts() {
   const [pagination, setPagination] = useState({});
 
   useEffect(() => {
+    document.title = 'All Products - Export Hub';
+  }, []);
+
+  useEffect(() => {
     fetchProducts();
   }, [page, search]);
 

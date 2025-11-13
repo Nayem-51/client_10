@@ -7,6 +7,7 @@ function Home() {
   const [error, setError] = useState('');
 
   useEffect(() => {
+    document.title = 'Home - Export Hub';
     fetchLatestProducts();
   }, []);
 
