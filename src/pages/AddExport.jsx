@@ -8,7 +8,6 @@ function AddExport() {
   useEffect(() => {
     document.title = 'Add Export - Export Hub';
     
-    // Role-based access control
     if (!user.email) {
       alert('Please login first');
       navigate('/signin');
@@ -41,7 +40,6 @@ function AddExport() {
       [name]: value
     });
     
-    // Update image preview when image URL changes
     if (name === 'productImage') {
       setImagePreview(value || 'https://via.placeholder.com/400x300?text=Product+Image');
     }
@@ -53,7 +51,6 @@ function AddExport() {
     setLoading(true);
 
     try {
-      // Get user data from localStorage
       const user = JSON.parse(localStorage.getItem('user') || '{}');
       
       if (!user.email) {
@@ -63,7 +60,6 @@ function AddExport() {
         return;
       }
 
-      // Prepare data for backend
       const productData = {
         productName: formData.productName,
         productImage: formData.productImage || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop',
@@ -75,7 +71,6 @@ function AddExport() {
         userName: user.name || 'Anonymous'
       };
 
-      // Send data to backend
       const response = await fetch('http://localhost:3000/products', {
         method: 'POST',
         headers: {

@@ -49,13 +49,12 @@ function ProductDetails() {
       return;
     }
 
-    // Check if user is an importer
     if (user.role !== 'importer') {
       alert('Only importers can import products. Your role is: ' + (user.role || 'not set'));
       return;
     }
 
-    setImportQuantity(1); // Reset to 1 when opening modal
+    setImportQuantity(1);
     setShowModal(true);
   };
 
@@ -164,19 +163,17 @@ function ProductDetails() {
   return (
     <div className="py-6">
       {/* Breadcrumb */}
-      <div className="text-sm breadcrumbs mb-6">
+      <div className="text-sm breadcrumbs mb-4 md:mb-6">
         <ul>
           <li><Link to="/">Home</Link></li>
           <li><Link to="/all-products">Products</Link></li>
-          <li>{product.productName || product.name}</li>
+          <li className="hidden sm:inline">{product.productName || product.name}</li>
         </ul>
       </div>
 
-      {/* Product Details */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-        {/* Product Image */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8 mb-6 md:mb-8">
         <div className="w-full">
-          <figure className="rounded-lg overflow-hidden shadow-xl bg-base-300 h-96 lg:h-[500px]">
+          <figure className="rounded-lg overflow-hidden shadow-xl bg-base-300 h-64 sm:h-80 md:h-96 lg:h-[500px]">
             {(product.productImage || product.image) ? (
               <img 
                 src={product.productImage || product.image} 
@@ -195,43 +192,39 @@ function ProductDetails() {
           </figure>
         </div>
 
-        {/* Product Information */}
         <div className="flex flex-col">
-          <h1 className="text-4xl font-bold mb-4">{product.productName || product.name}</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 md:mb-4">{product.productName || product.name}</h1>
           
-          {/* Rating */}
-          <div className="flex items-center gap-3 mb-4">
+          <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
             <div className="flex items-center">
               {renderStars(product.rating || 0)}
             </div>
-            <span className="text-lg font-semibold">({product.rating || 0})</span>
+            <span className="text-base md:text-lg font-semibold">({product.rating || 0})</span>
           </div>
 
-          {/* Price */}
-          <div className="mb-6">
-            <span className="text-4xl font-bold text-primary">${product.price}</span>
-            <span className="text-lg opacity-70 ml-2">per unit</span>
+          <div className="mb-4 md:mb-6">
+            <span className="text-3xl md:text-4xl font-bold text-primary">${product.price}</span>
+            <span className="text-sm md:text-lg opacity-70 ml-2">per unit</span>
           </div>
 
-          {/* Key Information */}
-          <div className="space-y-4 mb-6">
-            <div className="flex items-center gap-3 p-4 bg-base-200 rounded-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="space-y-3 md:space-y-4 mb-4 md:mb-6">
+            <div className="flex items-center gap-2 md:gap-3 p-3 md:p-4 bg-base-200 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 md:h-6 md:w-6 text-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <div>
-                <p className="text-sm opacity-70">Origin Country</p>
-                <p className="text-lg font-semibold">{product.originCountry}</p>
+                <p className="text-xs md:text-sm opacity-70">Origin Country</p>
+                <p className="text-base md:text-lg font-semibold">{product.originCountry}</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 p-4 bg-base-200 rounded-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="flex items-center gap-2 md:gap-3 p-3 md:p-4 bg-base-200 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 md:h-6 md:w-6 text-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
               </svg>
               <div>
-                <p className="text-sm opacity-70">Available Quantity</p>
-                <p className="text-lg font-semibold">
+                <p className="text-xs md:text-sm opacity-70">Available Quantity</p>
+                <p className="text-base md:text-lg font-semibold">
                   {product.availableQuantity} units
                   {product.availableQuantity < 10 && (
                     <span className="badge badge-warning ml-2">Low Stock</span>
@@ -245,79 +238,74 @@ function ProductDetails() {
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                 </svg>
-                <div>
-                  <p className="text-sm opacity-70">Category</p>
-                  <p className="text-lg font-semibold">{product.category}</p>
-                </div>
+              <div>
+                <p className="text-xs md:text-sm opacity-70">Category</p>
+                <p className="text-base md:text-lg font-semibold">{product.category}</p>
+              </div>
               </div>
             )}
           </div>
 
-          {/* Description */}
           {product.description && (
-            <div className="mb-6">
-              <h3 className="text-xl font-bold mb-3">Description</h3>
-              <p className="text-base opacity-80 leading-relaxed">{product.description}</p>
+            <div className="mb-4 md:mb-6">
+              <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3">Description</h3>
+              <p className="text-sm md:text-base opacity-80 leading-relaxed">{product.description}</p>
             </div>
           )}
 
-          {/* Import Button */}
-          <div className="bg-base-200 rounded-lg p-6 mb-6">
-            <h3 className="text-xl font-bold mb-4">Want to Import This Product?</h3>
-            <p className="mb-4 opacity-80">
+          <div className="bg-base-200 rounded-lg p-4 md:p-6 mb-4 md:mb-6">
+            <h3 className="text-lg md:text-xl font-bold mb-3 md:mb-4">Want to Import This Product?</h3>
+            <p className="mb-3 md:mb-4 opacity-80 text-sm md:text-base">
               Available Quantity: <span className="font-bold text-primary">{product.availableQuantity} units</span>
             </p>
             <button 
-              className="btn btn-primary w-full"
+              className="btn btn-primary btn-sm md:btn-md w-full"
               onClick={openImportModal}
               disabled={product.availableQuantity === 0}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 md:h-5 md:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
               Import Now
             </button>
             {product.availableQuantity === 0 && (
-              <div className="alert alert-warning mt-4">
+              <div className="alert alert-warning mt-3 md:mt-4 text-sm">
                 <span>This product is currently out of stock</span>
               </div>
             )}
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex gap-4 mt-auto">
-            <button className="btn btn-outline btn-primary flex-1">
+          <div className="flex flex-col sm:flex-row gap-2 md:gap-4 mt-auto">
+            <button className="btn btn-outline btn-primary btn-sm md:btn-md flex-1">
               Contact Supplier
             </button>
-            <Link to="/my-imports" className="btn btn-ghost">
+            <Link to="/my-imports" className="btn btn-ghost btn-sm md:btn-md">
               View My Imports
             </Link>
           </div>
         </div>
       </div>
 
-      {/* Additional Information */}
-      <div className="bg-base-200 rounded-lg p-6 mb-8">
-        <h3 className="text-2xl font-bold mb-4">Additional Information</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="bg-base-200 rounded-lg p-4 md:p-6 mb-6 md:mb-8">
+        <h3 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">Additional Information</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
           {product.userEmail && (
             <div>
-              <p className="text-sm opacity-70">Seller Email</p>
-              <p className="font-semibold">{product.userEmail}</p>
+              <p className="text-xs md:text-sm opacity-70">Seller Email</p>
+              <p className="text-sm md:text-base font-semibold break-all">{product.userEmail}</p>
             </div>
           )}
           {product.createdAt && (
             <div>
-              <p className="text-sm opacity-70">Listed On</p>
-              <p className="font-semibold">{new Date(product.createdAt).toLocaleDateString()}</p>
+              <p className="text-xs md:text-sm opacity-70">Listed On</p>
+              <p className="text-sm md:text-base font-semibold">{new Date(product.createdAt).toLocaleDateString()}</p>
             </div>
           )}
         </div>
       </div>
 
-      {/* Back Button */}
       <div className="flex justify-center">
-        <button onClick={() => navigate(-1)} className="btn btn-ghost">
+        <button onClick={() => navigate(-1)} className="btn btn-ghost btn-sm md:btn-md">
           ← Back to Products
         </button>
       </div>

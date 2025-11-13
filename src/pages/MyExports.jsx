@@ -107,10 +107,8 @@ function MyExports() {
       return;
     }
 
-    // Define CSV headers
     const headers = ['Product Name', 'Price', 'Origin Country', 'Rating', 'Available Quantity', 'Product Image'];
     
-    // Convert products to CSV rows
     const csvRows = products.map(product => [
       product.productName,
       product.price,
@@ -120,13 +118,11 @@ function MyExports() {
       product.productImage
     ]);
 
-    // Combine headers and rows
     const csvContent = [
       headers.join(','),
       ...csvRows.map(row => row.map(cell => `"${cell}"`).join(','))
     ].join('\n');
 
-    // Create blob and download
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
@@ -186,8 +182,9 @@ function MyExports() {
           </Link>
         </div>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="table table-zebra w-full">
+        <>
+          <div className="hidden md:block overflow-x-auto">
+            <table className="table table-zebra w-full">
             <thead>
               <tr>
                 <th>#</th>
@@ -252,6 +249,61 @@ function MyExports() {
             </tbody>
           </table>
         </div>
+
+        <div className="md:hidden grid grid-cols-1 gap-4">
+          {products.map((product, index) => (
+            <div key={product._id} className="card bg-base-100 shadow-lg">
+              <div className="card-body p-4">
+                <div className="flex items-start gap-3 mb-3">
+                  <img 
+                    src={product.productImage || 'https://via.placeholder.com/80x80?text=No+Image'} 
+                    alt={product.productName}
+                    className="w-20 h-20 object-cover rounded"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = 'https://via.placeholder.com/80x80?text=No+Image';
+                    }}
+                  />
+                  <div className="flex-1">
+                    <h3 className="font-bold text-lg">{product.productName}</h3>
+                    <p className="text-primary font-bold text-xl">${product.price}</p>
+                  </div>
+                </div>
+                
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="opacity-70">Country:</span>
+                    <span className="font-semibold">{product.originCountry}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="opacity-70">Rating:</span>
+                    <span>⭐ {product.rating}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="opacity-70">Available:</span>
+                    <span className="badge badge-info">{product.availableQuantity} units</span>
+                  </div>
+                </div>
+
+                <div className="flex gap-2 mt-4">
+                  <button 
+                    className="btn btn-sm btn-success flex-1"
+                    onClick={() => handleEdit(product)}
+                  >
+                    Update
+                  </button>
+                  <button 
+                    className="btn btn-sm btn-error flex-1"
+                    onClick={() => handleDelete(product._id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        </>
       )}
 
       {/* Update Modal */}

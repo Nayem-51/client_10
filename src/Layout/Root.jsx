@@ -6,10 +6,8 @@ const Root = () => {
   const location = useLocation();
   const user = JSON.parse(localStorage.getItem('user') || 'null');
   
-  // Dark mode state
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
 
-  // Apply theme on mount and when theme changes
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
@@ -31,165 +29,225 @@ const Root = () => {
 
   return (
     <div className="min-h-screen bg-base-200">
-      {/* Header */}
-      <header className="navbar bg-base-100 shadow-lg px-6">
-        {/* Left Side - Logo and Navigation */}
-        <div className="flex-1">
-          <Link to="/" className="btn btn-ghost text-xl font-bold">
-            <span className="text-primary">📦</span> Export Hub
+      {/* Header - All in One Line */}
+      <header className="navbar bg-base-100 shadow-lg px-4 py-3">
+        {/* Mobile Menu Button */}
+        <div className="flex-none lg:hidden">
+          <label htmlFor="mobile-drawer" className="btn btn-ghost btn-circle btn-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </label>
+        </div>
+
+        {/* Logo */}
+        <div className="flex-none">
+          <Link to="/" className="btn btn-ghost text-lg lg:text-xl font-bold px-2">
+            <span className="text-primary">📦</span>
+            <span className="hidden sm:inline">Export Hub</span>
           </Link>
+        </div>
           
-          <nav className="hidden md:flex ml-8 gap-2">
+        {/* Desktop Navigation */}
+        <div className="flex-1 hidden lg:flex justify-center">
+          <nav className="flex gap-1">
             <Link 
               to="/all-products" 
-              className={`btn btn-ghost ${isActive('/all-products')}`}
+              className={`btn btn-ghost btn-sm ${isActive('/all-products')}`}
             >
               All Products
             </Link>
             <Link 
               to="/my-exports" 
-              className={`btn btn-ghost ${isActive('/my-exports')}`}
+              className={`btn btn-ghost btn-sm ${isActive('/my-exports')}`}
             >
               My Exports
             </Link>
             <Link 
               to="/my-imports" 
-              className={`btn btn-ghost ${isActive('/my-imports')}`}
+              className={`btn btn-ghost btn-sm ${isActive('/my-imports')}`}
             >
               My Imports
             </Link>
             <Link 
               to="/add-export" 
-              className={`btn btn-ghost ${isActive('/add-export')}`}
+              className={`btn btn-ghost btn-sm ${isActive('/add-export')}`}
             >
               Add Export
             </Link>
           </nav>
         </div>
 
-        {/* Right Side - Login/Register or User Profile */}
-        <div className="flex-none">
-          {/* Theme Toggle Button */}
-          <button 
-            onClick={toggleTheme}
-            className="btn btn-ghost btn-circle btn-sm mr-2"
-            aria-label="Toggle theme"
-          >
-            {theme === 'light' ? (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-              </svg>
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-              </svg>
-            )}
-          </button>
+        {/* Spacer for mobile */}
+        <div className="flex-1 lg:hidden"></div>
 
-          {user ? (
-            <div className="flex items-center gap-3">
-              {/* User Avatar with Dropdown */}
-              <div className="dropdown dropdown-end">
-                <label tabIndex={0} className="btn btn-ghost btn-circle avatar cursor-pointer">
-                  <div className="w-10 h-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 overflow-hidden">
-                    {user.image ? (
-                      <img 
-                        src={user.image} 
-                        alt={user.name || 'User'} 
-                        className="w-full h-full object-cover"
-                        referrerPolicy="no-referrer"
-                      />
-                    ) : (
-                      <div className="bg-primary text-primary-content w-full h-full flex items-center justify-center text-xl font-bold">
-                        {user.name?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || 'U'}
-                      </div>
-                    )}
-                  </div>
-                </label>
-                <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-64">
-                  <li className="menu-title px-4 py-3">
-                    <div className="flex items-center gap-3">
-                      <div className="avatar">
-                        <div className="w-12 h-12 rounded-full overflow-hidden">
-                          {user.image ? (
-                            <img 
-                              src={user.image} 
-                              alt={user.name || 'User'} 
-                              className="w-full h-full object-cover"
-                              referrerPolicy="no-referrer"
-                            />
-                          ) : (
-                            <div className="bg-primary text-primary-content w-full h-full flex items-center justify-center text-lg font-bold">
-                              {user.name?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || 'U'}
-                            </div>
-                          )}
+        {/* Right Side - Theme Toggle & User */}
+        <div className="flex-none">
+          <div className="flex items-center gap-1">
+            {/* Theme Toggle Button */}
+            <button 
+              onClick={toggleTheme}
+              className="btn btn-ghost btn-circle btn-sm"
+              aria-label="Toggle theme"
+            >
+              {theme === 'light' ? (
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              )}
+            </button>
+
+            {user ? (
+              <>
+                {/* User Avatar with Dropdown */}
+                <div className="dropdown dropdown-end">
+                  <label tabIndex={0} className="btn btn-ghost btn-circle btn-sm avatar cursor-pointer">
+                    <div className="w-8 h-8 rounded-full ring ring-primary ring-offset-base-100 ring-offset-1 overflow-hidden">
+                      {user.image ? (
+                        <img 
+                          src={user.image} 
+                          alt={user.name || 'User'} 
+                          className="w-full h-full object-cover"
+                          referrerPolicy="no-referrer"
+                        />
+                      ) : (
+                        <div className="bg-primary text-primary-content w-full h-full flex items-center justify-center text-sm font-bold">
+                          {user.name?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || 'U'}
+                        </div>
+                      )}
+                    </div>
+                  </label>
+                  <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-64">
+                    <li className="menu-title px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        <div className="avatar">
+                          <div className="w-12 h-12 rounded-full overflow-hidden">
+                            {user.image ? (
+                              <img 
+                                src={user.image} 
+                                alt={user.name || 'User'} 
+                                className="w-full h-full object-cover"
+                                referrerPolicy="no-referrer"
+                              />
+                            ) : (
+                              <div className="bg-primary text-primary-content w-full h-full flex items-center justify-center text-lg font-bold">
+                                {user.name?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || 'U'}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="font-semibold text-base">{user.name || user.email?.split('@')[0]}</span>
+                          <span className="text-xs opacity-60 truncate max-w-[150px]">{user.email}</span>
                         </div>
                       </div>
-                      <div className="flex flex-col">
-                        <span className="font-semibold text-base">{user.name || user.email?.split('@')[0]}</span>
-                        <span className="text-xs opacity-60 truncate max-w-[150px]">{user.email}</span>
-                      </div>
-                    </div>
-                  </li>
-                  <div className="divider my-0"></div>
-                  <li><Link to="/profile">Profile</Link></li>
-                  <li><Link to="/my-exports">My Exports</Link></li>
-                  <li><Link to="/my-imports">My Imports</Link></li>
-                </ul>
-              </div>
+                    </li>
+                    <div className="divider my-0"></div>
+                    <li><Link to="/profile">Profile</Link></li>
+                    <li><Link to="/my-exports">My Exports</Link></li>
+                    <li><Link to="/my-imports">My Imports</Link></li>
+                  </ul>
+                </div>
 
-              {/* Logout Button */}
-              <button 
-                onClick={handleLogout} 
-                className="btn btn-outline btn-error btn-sm"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                </svg>
-                <span className="hidden sm:inline">Logout</span>
-              </button>
-            </div>
-          ) : (
-            <div className="flex gap-2">
-              <Link to="/signin" className="btn btn-ghost btn-sm">
-                Login
-              </Link>
-              <Link to="/signup" className="btn btn-primary btn-sm">
-                Register
-              </Link>
-            </div>
-          )}
+                {/* Logout Button */}
+                <button 
+                  onClick={handleLogout} 
+                  className="btn btn-ghost btn-sm hidden sm:flex"
+                  title="Logout"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                  </svg>
+                  <span className="hidden md:inline">Logout</span>
+                </button>
+              </>
+            ) : (
+              <div className="flex gap-1">
+                <Link to="/signin" className="btn btn-ghost btn-sm">
+                  Login
+                </Link>
+                <Link to="/signup" className="btn btn-primary btn-sm">
+                  Register
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
       </header>
 
-      {/* Mobile Navigation Menu */}
-      <div className="md:hidden bg-base-100 shadow-sm">
-        <nav className="flex overflow-x-auto gap-2 p-2">
-          <Link 
-            to="/all-products" 
-            className={`btn btn-sm btn-ghost ${isActive('/all-products')}`}
-          >
-            All Products
-          </Link>
-          <Link 
-            to="/my-exports" 
-            className={`btn btn-sm btn-ghost ${isActive('/my-exports')}`}
-          >
-            My Exports
-          </Link>
-          <Link 
-            to="/my-imports" 
-            className={`btn btn-sm btn-ghost ${isActive('/my-imports')}`}
-          >
-            My Imports
-          </Link>
-          <Link 
-            to="/add-export" 
-            className={`btn btn-sm btn-ghost ${isActive('/add-export')}`}
-          >
-            Add Export
-          </Link>
-        </nav>
+      {/* Mobile Drawer */}
+      <input type="checkbox" id="mobile-drawer" className="drawer-toggle hidden" />
+      <div className="drawer">
+        <label htmlFor="mobile-drawer" className="drawer-overlay"></label>
+        <aside className="drawer-side z-50">
+          <label htmlFor="mobile-drawer" className="drawer-overlay"></label>
+          <div className="menu p-4 w-64 min-h-full bg-base-100">
+            <div className="flex items-center justify-between mb-6">
+              <Link to="/" className="text-xl font-bold">
+                <span className="text-primary">📦</span> Export Hub
+              </Link>
+              <label htmlFor="mobile-drawer" className="btn btn-ghost btn-sm btn-circle">✕</label>
+            </div>
+            <ul className="space-y-2">
+              <li>
+                <Link 
+                  to="/all-products" 
+                  className={`${isActive('/all-products') ? 'active' : ''}`}
+                  onClick={() => document.getElementById('mobile-drawer').checked = false}
+                >
+                  All Products
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/my-exports" 
+                  className={`${isActive('/my-exports') ? 'active' : ''}`}
+                  onClick={() => document.getElementById('mobile-drawer').checked = false}
+                >
+                  My Exports
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/my-imports" 
+                  className={`${isActive('/my-imports') ? 'active' : ''}`}
+                  onClick={() => document.getElementById('mobile-drawer').checked = false}
+                >
+                  My Imports
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/add-export" 
+                  className={`${isActive('/add-export') ? 'active' : ''}`}
+                  onClick={() => document.getElementById('mobile-drawer').checked = false}
+                >
+                  Add Export
+                </Link>
+              </li>
+              {user && (
+                <>
+                  <div className="divider"></div>
+                  <li>
+                    <button onClick={() => {
+                      handleLogout();
+                      document.getElementById('mobile-drawer').checked = false;
+                    }} className="text-error">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                      </svg>
+                      Logout
+                    </button>
+                  </li>
+                </>
+              )}
+            </ul>
+          </div>
+        </aside>
       </div>
 
       {/* Main Content */}

@@ -29,7 +29,6 @@ function SignUp() {
       [name]: value
     });
 
-    // Real-time password validation
     if (name === 'password') {
       validatePassword(value);
     }
@@ -58,13 +57,11 @@ function SignUp() {
     e.preventDefault();
     setError('');
 
-    // Validate password
     if (!validatePassword(formData.password)) {
       setError('Please fix the password errors below');
       return;
     }
 
-    // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
       return;
@@ -89,7 +86,6 @@ function SignUp() {
 
       if (response.ok) {
         const data = await response.json();
-        // Store user data
         localStorage.setItem('token', data.token || 'user-token');
         localStorage.setItem('user', JSON.stringify({
           name: formData.name,
@@ -97,7 +93,6 @@ function SignUp() {
           image: formData.photoURL,
           role: formData.role
         }));
-        // Navigate to home page
         navigate('/');
       } else {
         const data = await response.json();
@@ -119,15 +114,12 @@ function SignUp() {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       
-      // Get user information from Google
       const user = result.user;
       
-      // Prompt user for role
       const role = window.confirm('Are you an Exporter? (Click OK for Exporter, Cancel for Importer)') 
         ? 'exporter' 
         : 'importer';
       
-      // Store user data in localStorage
       const userData = {
         uid: user.uid,
         email: user.email,
@@ -139,7 +131,6 @@ function SignUp() {
       localStorage.setItem('token', user.accessToken || 'google-auth-token');
       localStorage.setItem('user', JSON.stringify(userData));
       
-      // Save user data to backend
       try {
         await fetch('http://localhost:3000/users', {
           method: 'POST',
@@ -157,10 +148,8 @@ function SignUp() {
         });
       } catch (backendError) {
         console.log('Backend registration info:', backendError);
-        // Continue even if backend fails - user is still registered via Firebase
       }
       
-      // Navigate to home page
       navigate('/');
     } catch (err) {
       console.error('Google sign-up error:', err);

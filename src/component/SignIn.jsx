@@ -40,7 +40,6 @@ function SignIn() {
 
       if (response.ok) {
         const data = await response.json();
-        // Store token and user data
         localStorage.setItem('token', data.token || 'dummy-token');
         localStorage.setItem('user', JSON.stringify(data.user || { email: formData.email, name: formData.email.split('@')[0] }));
         navigate('/');
@@ -64,10 +63,8 @@ function SignIn() {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       
-      // Get user information from Google
       const user = result.user;
       
-      // Store user data in localStorage
       const userData = {
         uid: user.uid,
         email: user.email,
@@ -78,7 +75,6 @@ function SignIn() {
       localStorage.setItem('token', user.accessToken || 'google-auth-token');
       localStorage.setItem('user', JSON.stringify(userData));
       
-      // Save/Update user in backend database
       try {
         await fetch('http://localhost:3000/users', {
           method: 'POST',
@@ -95,10 +91,8 @@ function SignIn() {
         });
       } catch (backendError) {
         console.log('Backend registration info:', backendError);
-        // Continue even if backend fails - user is still logged in via Firebase
       }
       
-      // Navigate to home page
       navigate('/');
     } catch (err) {
       console.error('Google sign-in error:', err);

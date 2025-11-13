@@ -84,8 +84,9 @@ function MyImports() {
           <p className="text-gray-600">Start importing products from the All Products page</p>
         </div>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="table table-zebra w-full">
+        <>
+          <div className="hidden md:block overflow-x-auto">
+            <table className="table table-zebra w-full">
             <thead>
               <tr>
                 <th>#</th>
@@ -141,6 +142,61 @@ function MyImports() {
             </tbody>
           </table>
         </div>
+
+        <div className="md:hidden grid grid-cols-1 gap-4">
+          {imports.map((importItem, index) => (
+            <div key={importItem._id} className="card bg-base-100 shadow-lg">
+              <div className="card-body p-4">
+                <div className="flex items-start gap-3 mb-3">
+                  <img 
+                    src={importItem.productImage || 'https://via.placeholder.com/80x80?text=No+Image'} 
+                    alt={importItem.productName}
+                    className="w-20 h-20 object-cover rounded"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = 'https://via.placeholder.com/80x80?text=No+Image';
+                    }}
+                  />
+                  <div className="flex-1">
+                    <h3 className="font-bold text-lg">{importItem.productName}</h3>
+                    <p className="text-primary font-bold text-xl">${importItem.price}</p>
+                  </div>
+                </div>
+                
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="opacity-70">Rating:</span>
+                    <span>⭐ {importItem.rating}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="opacity-70">Country:</span>
+                    <span className="font-semibold">{importItem.originCountry}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="opacity-70">Imported:</span>
+                    <span className="badge badge-success">{importItem.importedQuantity} units</span>
+                  </div>
+                </div>
+
+                <div className="flex gap-2 mt-4">
+                  <Link 
+                    to={`/product/${importItem.productId}`}
+                    className="btn btn-sm btn-info flex-1"
+                  >
+                    See Details
+                  </Link>
+                  <button 
+                    className="btn btn-sm btn-error flex-1"
+                    onClick={() => handleRemove(importItem._id)}
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        </>
       )}
     </div>
   );
