@@ -9,7 +9,8 @@ function SignUp() {
     email: '',
     photoURL: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    role: 'exporter' // Default role
   });
   const [error, setError] = useState('');
   const [passwordErrors, setPasswordErrors] = useState([]);
@@ -81,7 +82,8 @@ function SignUp() {
           name: formData.name,
           email: formData.email,
           photoURL: formData.photoURL,
-          password: formData.password
+          password: formData.password,
+          role: formData.role
         }),
       });
 
@@ -92,7 +94,8 @@ function SignUp() {
         localStorage.setItem('user', JSON.stringify({
           name: formData.name,
           email: formData.email,
-          image: formData.photoURL
+          image: formData.photoURL,
+          role: formData.role
         }));
         // Navigate to home page
         navigate('/');
@@ -119,12 +122,18 @@ function SignUp() {
       // Get user information from Google
       const user = result.user;
       
+      // Prompt user for role
+      const role = window.confirm('Are you an Exporter? (Click OK for Exporter, Cancel for Importer)') 
+        ? 'exporter' 
+        : 'importer';
+      
       // Store user data in localStorage
       const userData = {
         uid: user.uid,
         email: user.email,
         name: user.displayName,
-        image: user.photoURL
+        image: user.photoURL,
+        role: role
       };
       
       localStorage.setItem('token', user.accessToken || 'google-auth-token');
@@ -142,7 +151,8 @@ function SignUp() {
             email: user.email,
             photoURL: user.photoURL,
             googleAuth: true,
-            uid: user.uid
+            uid: user.uid,
+            role: role
           }),
         });
       } catch (backendError) {
@@ -226,6 +236,25 @@ function SignUp() {
                 value={formData.photoURL}
                 onChange={handleChange}
               />
+            </div>
+
+            <div className="form-control mt-4">
+              <label className="label">
+                <span className="label-text font-semibold">Select Your Role</span>
+              </label>
+              <select
+                name="role"
+                className="select select-bordered w-full"
+                value={formData.role}
+                onChange={handleChange}
+                required
+              >
+                <option value="exporter">Exporter (Can export products)</option>
+                <option value="importer">Importer (Can import products)</option>
+              </select>
+              <label className="label">
+                <span className="label-text-alt">Exporters can add products, Importers can buy products</span>
+              </label>
             </div>
 
             <div className="form-control mt-4">

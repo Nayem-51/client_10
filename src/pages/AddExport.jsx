@@ -2,8 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function AddExport() {
+  const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+
   useEffect(() => {
     document.title = 'Add Export - Export Hub';
+    
+    // Role-based access control
+    if (!user.email) {
+      alert('Please login first');
+      navigate('/signin');
+      return;
+    }
+    
+    if (user.role !== 'exporter') {
+      alert('Only exporters can add products. Your role is: ' + (user.role || 'not set'));
+      navigate('/');
+    }
   }, []);
 
   const [formData, setFormData] = useState({
@@ -18,7 +33,6 @@ function AddExport() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [imagePreview, setImagePreview] = useState('https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop');
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;

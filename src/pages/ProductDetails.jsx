@@ -49,6 +49,12 @@ function ProductDetails() {
       return;
     }
 
+    // Check if user is an importer
+    if (user.role !== 'importer') {
+      alert('Only importers can import products. Your role is: ' + (user.role || 'not set'));
+      return;
+    }
+
     setImportQuantity(1); // Reset to 1 when opening modal
     setShowModal(true);
   };
