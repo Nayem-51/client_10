@@ -9,8 +9,7 @@ function SignUp() {
     email: '',
     photoURL: '',
     password: '',
-    confirmPassword: '',
-    role: 'exporter' // Default role
+    confirmPassword: ''
   });
   const [error, setError] = useState('');
   const [passwordErrors, setPasswordErrors] = useState([]);
@@ -79,8 +78,7 @@ function SignUp() {
           name: formData.name,
           email: formData.email,
           photoURL: formData.photoURL,
-          password: formData.password,
-          role: formData.role
+          password: formData.password
         }),
       });
 
@@ -90,8 +88,7 @@ function SignUp() {
         localStorage.setItem('user', JSON.stringify({
           name: formData.name,
           email: formData.email,
-          image: formData.photoURL,
-          role: formData.role
+          image: formData.photoURL
         }));
         navigate('/');
       } else {
@@ -112,55 +109,69 @@ function SignUp() {
 
     try {
       const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({
+        prompt: 'select_account'
+      });
+      
+      console.log('Starting Google sign-up...');
       const result = await signInWithPopup(auth, provider);
       
+      console.log('Google sign-up successful!', result);
       const user = result.user;
-      
-      const role = window.confirm('Are you an Exporter? (Click OK for Exporter, Cancel for Importer)') 
-        ? 'exporter' 
-        : 'importer';
       
       const userData = {
         uid: user.uid,
         email: user.email,
-        name: user.displayName,
-        image: user.photoURL,
-        role: role
+        name: user.displayName || user.email,
+        image: user.photoURL || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.email)
       };
       
+      console.log('Saving user data:', userData);
       localStorage.setItem('token', user.accessToken || 'google-auth-token');
       localStorage.setItem('user', JSON.stringify(userData));
       
       try {
-        await fetch('http://localhost:3000/users', {
+        const backendResponse = await fetch('http://localhost:3000/users', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            name: user.displayName,
+            name: user.displayName || user.email,
             email: user.email,
             photoURL: user.photoURL,
             googleAuth: true,
-            uid: user.uid,
-            role: role
+            uid: user.uid
           }),
         });
+        console.log('Backend response:', await backendResponse.text());
       } catch (backendError) {
-        console.log('Backend registration info:', backendError);
+        console.log('Backend registration (optional):', backendError);
       }
       
+      console.log('Navigating to home...');
       navigate('/');
     } catch (err) {
-      console.error('Google sign-up error:', err);
+      console.error('Google sign-up error details:', {
+        code: err.code,
+        message: err.message,
+        details: err
+      });
+      
       if (err.code === 'auth/popup-closed-by-user') {
         setError('Sign-up cancelled. Please try again.');
       } else if (err.code === 'auth/popup-blocked') {
         setError('Popup blocked. Please allow popups for this site.');
       } else if (err.code === 'auth/account-exists-with-different-credential') {
         setError('An account already exists with this email.');
+      } else if (err.code === 'auth/unauthorized-domain') {
+        setError('This domain is not authorized. Please contact support.');
+      } else if (err.code === 'auth/cancelled-popup-request') {
+        setError('Sign-up cancelled. Please try again.');
+      } else if (err.code === 'auth/network-request-failed') {
+        setError('Network error. Please check your internet connection.');
       } else {
-        setError('Failed to sign up with Google. Please try again.');
+        setError(`Failed to sign up with Google: ${err.message || 'Please try again.'}`);
       }
     } finally {
       setGoogleLoading(false);
@@ -225,25 +236,26 @@ function SignUp() {
                 value={formData.photoURL}
                 onChange={handleChange}
               />
-            </div>
-
-            <div className="form-control mt-4">
-              <label className="label">
-                <span className="label-text font-semibold">Select Your Role</span>
-              </label>
-              <select
-                name="role"
-                className="select select-bordered w-full"
-                value={formData.role}
-                onChange={handleChange}
-                required
-              >
-                <option value="exporter">Exporter (Can export products)</option>
-                <option value="importer">Importer (Can import products)</option>
-              </select>
-              <label className="label">
-                <span className="label-text-alt">Exporters can add products, Importers can buy products</span>
-              </label>
+              {formData.photoURL && (
+                <div className="mt-3">
+                  <p className="text-sm font-semibold mb-2">Image Preview:</p>
+                  <div className="flex justify-center">
+                    <div className="w-32 h-32 rounded-full overflow-hidden bg-base-200 flex items-center justify-center border-4 border-primary">
+                      <img 
+                        src={formData.photoURL} 
+                        alt="Profile Preview"
+                        className="w-full h-full object-cover"
+                        crossOrigin="anonymous"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = 'https://via.placeholder.com/128/3b82f6/ffffff?text=No+Image';
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="form-control mt-4">

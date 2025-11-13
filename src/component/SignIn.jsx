@@ -61,47 +61,67 @@ function SignIn() {
 
     try {
       const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({
+        prompt: 'select_account'
+      });
+      
+      console.log('Starting Google sign-in...');
       const result = await signInWithPopup(auth, provider);
       
+      console.log('Google sign-in successful!', result);
       const user = result.user;
       
       const userData = {
         uid: user.uid,
         email: user.email,
-        name: user.displayName,
-        image: user.photoURL
+        name: user.displayName || user.email,
+        image: user.photoURL || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.email)
       };
       
+      console.log('Saving user data:', userData);
       localStorage.setItem('token', user.accessToken || 'google-auth-token');
       localStorage.setItem('user', JSON.stringify(userData));
       
       try {
-        await fetch('http://localhost:3000/users', {
+        const backendResponse = await fetch('http://localhost:3000/users', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            name: user.displayName,
+            name: user.displayName || user.email,
             email: user.email,
             photoURL: user.photoURL,
             googleAuth: true,
             uid: user.uid
           }),
         });
+        console.log('Backend response:', await backendResponse.text());
       } catch (backendError) {
-        console.log('Backend registration info:', backendError);
+        console.log('Backend registration (optional):', backendError);
       }
       
+      console.log('Navigating to home...');
       navigate('/');
     } catch (err) {
-      console.error('Google sign-in error:', err);
+      console.error('Google sign-in error details:', {
+        code: err.code,
+        message: err.message,
+        details: err
+      });
+      
       if (err.code === 'auth/popup-closed-by-user') {
         setError('Sign-in cancelled. Please try again.');
       } else if (err.code === 'auth/popup-blocked') {
         setError('Popup blocked. Please allow popups for this site.');
+      } else if (err.code === 'auth/unauthorized-domain') {
+        setError('This domain is not authorized. Please contact support.');
+      } else if (err.code === 'auth/cancelled-popup-request') {
+        setError('Sign-in cancelled. Please try again.');
+      } else if (err.code === 'auth/network-request-failed') {
+        setError('Network error. Please check your internet connection.');
       } else {
-        setError('Failed to sign in with Google. Please try again.');
+        setError(`Failed to sign in with Google: ${err.message || 'Please try again.'}`);
       }
     } finally {
       setGoogleLoading(false);

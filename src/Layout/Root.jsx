@@ -44,7 +44,7 @@ const Root = () => {
         theme={theme === 'dark' ? 'dark' : 'light'}
       />
       {/* Header - All in One Line */}
-      <header className="navbar bg-base-100 shadow-lg px-4 py-3">
+      <header className="navbar bg-base-100 shadow-lg px-4 py-3 sticky top-0 z-50">
         {/* Mobile Menu Button */}
         <div className="flex-none lg:hidden">
           <label htmlFor="mobile-drawer" className="btn btn-ghost btn-circle btn-sm">
@@ -57,7 +57,11 @@ const Root = () => {
         {/* Logo */}
         <div className="flex-none">
           <Link to="/" className="btn btn-ghost text-lg lg:text-xl font-bold px-2">
-            <span className="text-primary">📦</span>
+            <img 
+              src="/export_logo.jpeg" 
+              alt="Export Hub Logo" 
+              className="h-8 w-8 rounded"
+            />
             <span className="hidden sm:inline">Export Hub</span>
           </Link>
         </div>
@@ -201,8 +205,13 @@ const Root = () => {
           <label htmlFor="mobile-drawer" className="drawer-overlay"></label>
           <div className="menu p-4 w-64 min-h-full bg-base-100">
             <div className="flex items-center justify-between mb-6">
-              <Link to="/" className="text-xl font-bold">
-                <span className="text-primary">📦</span> Export Hub
+              <Link to="/" className="text-xl font-bold flex items-center gap-2">
+                <img 
+                  src="/export_logo.jpeg" 
+                  alt="Export Hub Logo" 
+                  className="h-8 w-8 rounded"
+                />
+                Export Hub
               </Link>
               <label htmlFor="mobile-drawer" className="btn btn-ghost btn-sm btn-circle">✕</label>
             </div>
@@ -278,7 +287,11 @@ const Root = () => {
             {/* Company Info */}
             <div className="space-y-4">
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-3xl">📦</span>
+                <img 
+                  src="/export_logo.jpeg" 
+                  alt="Export Hub Logo" 
+                  className="h-12 w-12 rounded"
+                />
                 <h3 className="text-xl font-bold text-primary">Export Hub</h3>
               </div>
               <p className="text-sm leading-relaxed opacity-80">

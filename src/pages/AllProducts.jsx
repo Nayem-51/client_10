@@ -122,22 +122,18 @@ function AllProducts() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {products.map((product) => (
               <div key={product._id} className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow h-full flex flex-col">
-                <figure className="h-48 overflow-hidden bg-base-300 flex-shrink-0">
-                  {(product.productImage || product.image) ? (
-                    <img 
-                      src={product.productImage || product.image} 
-                      alt={product.productName || product.name}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = 'https://via.placeholder.com/400x300?text=Product+Image';
-                      }}
-                    />
-                  ) : (
-                    <div className="flex items-center justify-center h-full w-full text-6xl">
-                      📦
-                    </div>
-                  )}
+                <figure className="h-56 w-full overflow-hidden bg-base-300 flex-shrink-0 rounded-t-2xl">
+                  <img 
+                    src={product.productImage || product.image || 'https://images.unsplash.com/photo-1560393464-5c69a73c5770?w=400&h=300&fit=crop'} 
+                    alt={product.productName || product.name || 'Product'}
+                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                    crossOrigin="anonymous"
+                    loading="lazy"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = 'https://via.placeholder.com/400x300/3b82f6/ffffff?text=' + encodeURIComponent(product.productName || 'Product');
+                    }}
+                  />
                 </figure>
                 <div className="card-body p-4 flex flex-col flex-grow">
                   <h2 className="card-title text-base">

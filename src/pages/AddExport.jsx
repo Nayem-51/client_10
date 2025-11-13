@@ -14,11 +14,6 @@ function AddExport() {
       navigate('/signin');
       return;
     }
-    
-    if (user.role !== 'exporter') {
-      toast.error('Only exporters can add products. Your role is: ' + (user.role || 'not set'));
-      navigate('/');
-    }
   }, []);
 
   const [formData, setFormData] = useState({
@@ -114,7 +109,7 @@ function AddExport() {
           <form onSubmit={handleSubmit}>
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-semibold">Product Name</span>
+                <span className="label-text font-semibold">a. Product Name</span>
               </label>
               <input
                 type="text"
@@ -129,7 +124,7 @@ function AddExport() {
 
             <div className="form-control mt-4">
               <label className="label">
-                <span className="label-text font-semibold">Product Image URL</span>
+                <span className="label-text font-semibold">b. Product Image (image url)</span>
               </label>
               <input
                 type="url"
@@ -148,9 +143,11 @@ function AddExport() {
                     src={imagePreview} 
                     alt="Product preview"
                     className="max-w-full max-h-full object-contain"
+                    crossOrigin="anonymous"
+                    loading="lazy"
                     onError={(e) => {
                       e.target.onerror = null;
-                      e.target.src = 'https://via.placeholder.com/400x300?text=Invalid+Image+URL';
+                      e.target.src = 'https://via.placeholder.com/400x300/3b82f6/ffffff?text=Invalid+Image+URL';
                     }}
                   />
                 </div>
@@ -215,43 +212,68 @@ function AddExport() {
                   >
                     👟 Product 5
                   </button>
+                  <button 
+                    type="button"
+                    className="btn btn-xs btn-outline"
+                    onClick={() => {
+                      const url = 'https://images.unsplash.com/photo-1560393464-5c69a73c5770?w=400&h=300&fit=crop';
+                      setFormData({...formData, productImage: url});
+                      setImagePreview(url);
+                    }}
+                  >
+                    💼 Product 6
+                  </button>
+                  <button 
+                    type="button"
+                    className="btn btn-xs btn-outline"
+                    onClick={() => {
+                      const url = 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=300&fit=crop';
+                      setFormData({...formData, productImage: url});
+                      setImagePreview(url);
+                    }}
+                  >
+                    👟 Product 7
+                  </button>
+                  <button 
+                    type="button"
+                    className="btn btn-xs btn-outline"
+                    onClick={() => {
+                      const url = 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400&h=300&fit=crop';
+                      setFormData({...formData, productImage: url});
+                      setImagePreview(url);
+                    }}
+                  >
+                    ⌚ Product 8
+                  </button>
+                  <button 
+                    type="button"
+                    className="btn btn-xs btn-outline"
+                    onClick={() => {
+                      const url = 'https://images.unsplash.com/photo-1572635196184-84e35138cf62?w=400&h=300&fit=crop';
+                      setFormData({...formData, productImage: url});
+                      setImagePreview(url);
+                    }}
+                  >
+                    📱 Product 9
+                  </button>
+                  <button 
+                    type="button"
+                    className="btn btn-xs btn-outline"
+                    onClick={() => {
+                      const url = 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=400&h=300&fit=crop';
+                      setFormData({...formData, productImage: url});
+                      setImagePreview(url);
+                    }}
+                  >
+                    📷 Product 10
+                  </button>
                 </div>
               </div>
             </div>
 
             <div className="form-control mt-4">
               <label className="label">
-                <span className="label-text font-semibold">Quantity</span>
-              </label>
-              <input
-                type="number"
-                name="quantity"
-                placeholder="Enter quantity"
-                className="input input-bordered w-full"
-                value={formData.quantity}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className="form-control mt-4">
-              <label className="label">
-                <span className="label-text font-semibold">Destination Country</span>
-              </label>
-              <input
-                type="text"
-                name="destination"
-                placeholder="Enter destination"
-                className="input input-bordered w-full"
-                value={formData.destination}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className="form-control mt-4">
-              <label className="label">
-                <span className="label-text font-semibold">Price (USD)</span>
+                <span className="label-text font-semibold">c. Price (USD)</span>
               </label>
               <input
                 type="number"
@@ -267,7 +289,22 @@ function AddExport() {
 
             <div className="form-control mt-4">
               <label className="label">
-                <span className="label-text font-semibold">Rating</span>
+                <span className="label-text font-semibold">d. Origin Country</span>
+              </label>
+              <input
+                type="text"
+                name="destination"
+                placeholder="Enter origin country"
+                className="input input-bordered w-full"
+                value={formData.destination}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-control mt-4">
+              <label className="label">
+                <span className="label-text font-semibold">e. Rating</span>
               </label>
               <input
                 type="number"
@@ -284,6 +321,21 @@ function AddExport() {
               <label className="label">
                 <span className="label-text-alt">Rating should be between 0 and 5</span>
               </label>
+            </div>
+
+            <div className="form-control mt-4">
+              <label className="label">
+                <span className="label-text font-semibold">f. Available Quantity</span>
+              </label>
+              <input
+                type="number"
+                name="quantity"
+                placeholder="Enter available quantity"
+                className="input input-bordered w-full"
+                value={formData.quantity}
+                onChange={handleChange}
+                required
+              />
             </div>
 
             <div className="form-control mt-4">
@@ -308,7 +360,7 @@ function AddExport() {
                     Adding to database...
                   </>
                 ) : (
-                  'Add Export/Product'
+                  'g. Add Export/Product'
                 )}
               </button>
             </div>

@@ -205,15 +205,19 @@ function MyExports() {
                   <th>{index + 1}</th>
                   {/* 1. Product Image */}
                   <td>
-                    <img 
-                      src={product.productImage || 'https://via.placeholder.com/48x48?text=No+Image'} 
-                      alt={product.productName}
-                      className="w-12 h-12 object-cover rounded"
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = 'https://via.placeholder.com/48x48?text=No+Image';
-                      }}
-                    />
+                    <div className="w-16 h-16 rounded-lg overflow-hidden bg-base-200 shrink-0">
+                      <img 
+                        src={product.productImage || 'https://via.placeholder.com/64x64?text=No+Image'} 
+                        alt={product.productName}
+                        className="w-full h-full object-cover"
+                        crossOrigin="anonymous"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = 'https://via.placeholder.com/64x64/3b82f6/ffffff?text=No+Image';
+                        }}
+                      />
+                    </div>
                   </td>
                   {/* 2. Product Name */}
                   <td className="font-semibold">{product.productName}</td>
@@ -256,15 +260,19 @@ function MyExports() {
             <div key={product._id} className="card bg-base-100 shadow-lg">
               <div className="card-body p-4">
                 <div className="flex items-start gap-3 mb-3">
-                  <img 
-                    src={product.productImage || 'https://via.placeholder.com/80x80?text=No+Image'} 
-                    alt={product.productName}
-                    className="w-20 h-20 object-cover rounded"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = 'https://via.placeholder.com/80x80?text=No+Image';
-                    }}
-                  />
+                  <div className="w-24 h-24 shrink-0 rounded-lg overflow-hidden bg-base-200">
+                    <img 
+                      src={product.productImage || 'https://via.placeholder.com/96x96?text=No+Image'} 
+                      alt={product.productName}
+                      className="w-full h-full object-cover"
+                      crossOrigin="anonymous"
+                      loading="lazy"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = 'https://via.placeholder.com/96x96/3b82f6/ffffff?text=No+Image';
+                      }}
+                    />
+                  </div>
                   <div className="flex-1">
                     <h3 className="font-bold text-lg">{product.productName}</h3>
                     <p className="text-primary font-bold text-xl">${product.price}</p>

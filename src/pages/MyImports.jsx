@@ -26,6 +26,10 @@ function MyImports() {
       const data = await response.json();
 
       if (response.ok) {
+        console.log('Imports data:', data.data);
+        data.data?.forEach(item => {
+          console.log('Import item productId:', item.productId);
+        });
         setImports(data.data || []);
       } else {
         setError(data.error || 'Failed to fetch imports');
@@ -91,13 +95,14 @@ function MyImports() {
             <thead>
               <tr>
                 <th>#</th>
-                <th>Image</th>
-                <th>Product Name</th>
-                <th>Price</th>
-                <th>Rating</th>
-                <th>Origin Country</th>
-                <th>Imported Quantity</th>
-                <th>Actions</th>
+                <th>1. Product Image</th>
+                <th>2. Product Name</th>
+                <th>3. Price</th>
+                <th>4. Rating</th>
+                <th>5. Origin Country</th>
+                <th>6. Remove</th>
+                <th>7. Imported Quantity</th>
+                <th>8. See Details</th>
               </tr>
             </thead>
             <tbody>
@@ -105,38 +110,49 @@ function MyImports() {
                 <tr key={importItem._id}>
                   <th>{index + 1}</th>
                   <td>
-                    <img 
-                      src={importItem.productImage || 'https://via.placeholder.com/48x48?text=No+Image'} 
-                      alt={importItem.productName}
-                      className="w-12 h-12 object-cover rounded"
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = 'https://via.placeholder.com/48x48?text=No+Image';
-                      }}
-                    />
+                    <div className="w-16 h-16 rounded-lg overflow-hidden bg-base-200 shrink-0">
+                      <img 
+                        src={importItem.productImage || 'https://via.placeholder.com/64x64?text=No+Image'} 
+                        alt={importItem.productName}
+                        className="w-full h-full object-cover"
+                        crossOrigin="anonymous"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = 'https://via.placeholder.com/64x64/3b82f6/ffffff?text=No+Image';
+                        }}
+                      />
+                    </div>
                   </td>
                   <td className="font-semibold">{importItem.productName}</td>
                   <td className="text-primary font-bold">${importItem.price}</td>
                   <td>⭐ {importItem.rating}</td>
                   <td>{importItem.originCountry}</td>
                   <td>
+                    <button 
+                      className="btn btn-xs btn-error"
+                      onClick={() => handleRemove(importItem._id)}
+                    >
+                      Remove
+                    </button>
+                  </td>
+                  <td>
                     <span className="badge badge-success">{importItem.importedQuantity} units</span>
                   </td>
                   <td>
-                    <div className="flex flex-col gap-2">
-                      <button 
-                        className="btn btn-xs btn-error"
-                        onClick={() => handleRemove(importItem._id)}
-                      >
-                        Remove
-                      </button>
-                      <Link 
-                        to={`/product/${importItem.productId}`}
-                        className="btn btn-xs btn-info"
-                      >
-                        See Details
-                      </Link>
-                    </div>
+                    <Link 
+                      to={`/product/${importItem.productId}`}
+                      className="btn btn-xs btn-info"
+                      onClick={(e) => {
+                        console.log('Clicking See Details for productId:', importItem.productId);
+                        if (!importItem.productId) {
+                          e.preventDefault();
+                          toast.error('Product ID not found. Please contact support.');
+                        }
+                      }}
+                    >
+                      See Details
+                    </Link>
                   </td>
                 </tr>
               ))}
@@ -149,15 +165,19 @@ function MyImports() {
             <div key={importItem._id} className="card bg-base-100 shadow-lg">
               <div className="card-body p-4">
                 <div className="flex items-start gap-3 mb-3">
-                  <img 
-                    src={importItem.productImage || 'https://via.placeholder.com/80x80?text=No+Image'} 
-                    alt={importItem.productName}
-                    className="w-20 h-20 object-cover rounded"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = 'https://via.placeholder.com/80x80?text=No+Image';
-                    }}
-                  />
+                  <div className="w-24 h-24 shrink-0 rounded-lg overflow-hidden bg-base-200">
+                    <img 
+                      src={importItem.productImage || 'https://via.placeholder.com/96x96?text=No+Image'} 
+                      alt={importItem.productName}
+                      className="w-full h-full object-cover"
+                      crossOrigin="anonymous"
+                      loading="lazy"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = 'https://via.placeholder.com/96x96/3b82f6/ffffff?text=No+Image';
+                      }}
+                    />
+                  </div>
                   <div className="flex-1">
                     <h3 className="font-bold text-lg">{importItem.productName}</h3>
                     <p className="text-primary font-bold text-xl">${importItem.price}</p>
@@ -166,32 +186,39 @@ function MyImports() {
                 
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="opacity-70">Rating:</span>
+                    <span className="opacity-70">4. Rating:</span>
                     <span>⭐ {importItem.rating}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="opacity-70">Country:</span>
+                    <span className="opacity-70">5. Country:</span>
                     <span className="font-semibold">{importItem.originCountry}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="opacity-70">Imported:</span>
-                    <span className="badge badge-success">{importItem.importedQuantity} units</span>
                   </div>
                 </div>
 
-                <div className="flex gap-2 mt-4">
-                  <Link 
-                    to={`/product/${importItem.productId}`}
-                    className="btn btn-sm btn-info flex-1"
-                  >
-                    See Details
-                  </Link>
+                <div className="flex flex-col gap-2 mt-4">
                   <button 
-                    className="btn btn-sm btn-error flex-1"
+                    className="btn btn-sm btn-error w-full"
                     onClick={() => handleRemove(importItem._id)}
                   >
-                    Remove
+                    6. Remove
                   </button>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm opacity-70">7. Imported:</span>
+                    <span className="badge badge-success">{importItem.importedQuantity} units</span>
+                  </div>
+                  <Link 
+                    to={`/product/${importItem.productId}`}
+                    className="btn btn-sm btn-info w-full"
+                    onClick={(e) => {
+                      console.log('Mobile - Clicking See Details for productId:', importItem.productId);
+                      if (!importItem.productId) {
+                        e.preventDefault();
+                        toast.error('Product ID not found. Please contact support.');
+                      }
+                    }}
+                  >
+                    8. See Details
+                  </Link>
                 </div>
               </div>
             </div>

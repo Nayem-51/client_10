@@ -26,12 +26,18 @@ function ProductDetails() {
 
   const fetchProductDetails = async () => {
     try {
+      console.log('Fetching product with ID:', id);
       const response = await fetch(`http://localhost:3000/products/${id}`);
+      console.log('Response status:', response.status);
+      
       if (response.ok) {
         const result = await response.json();
+        console.log('Product data received:', result);
         setProduct(result.data || result);
       } else {
-        setError('Product not found');
+        const errorData = await response.json();
+        console.error('Product fetch failed:', errorData);
+        setError(errorData.error || 'Product not found');
       }
     } catch (err) {
       console.error('Error fetching product details:', err);
@@ -47,11 +53,6 @@ function ProductDetails() {
     if (!user.email) {
       toast.error('Please login first to import products');
       navigate('/signin');
-      return;
-    }
-
-    if (user.role !== 'importer') {
-      toast.error('Only importers can import products. Your role is: ' + (user.role || 'not set'));
       return;
     }
 
@@ -151,12 +152,28 @@ function ProductDetails() {
 
   if (error || !product) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen">
-        <div className="text-6xl mb-4">😕</div>
-        <h2 className="text-2xl font-bold mb-4">{error || 'Product Not Found'}</h2>
-        <Link to="/" className="btn btn-primary">
-          Go Back Home
-        </Link>
+      <div className="min-h-screen flex flex-col items-center justify-center px-4">
+        <div className="text-center max-w-md">
+          <div className="text-6xl mb-4">😕</div>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4">Product not found</h2>
+          <p className="text-base-content/70 mb-6 text-sm sm:text-base">
+            This product may have been removed by the seller or is no longer available.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link to="/all-products" className="btn btn-primary btn-sm sm:btn-md">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+              Browse All Products
+            </Link>
+            <Link to="/my-imports" className="btn btn-ghost btn-sm sm:btn-md">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              Back to My Imports
+            </Link>
+          </div>
+        </div>
       </div>
     );
   }
@@ -174,22 +191,18 @@ function ProductDetails() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8 mb-6 md:mb-8">
         <div className="w-full">
-          <figure className="rounded-lg overflow-hidden shadow-xl bg-base-300 h-64 sm:h-80 md:h-96 lg:h-[500px]">
-            {(product.productImage || product.image) ? (
-              <img 
-                src={product.productImage || product.image} 
-                alt={product.productName || product.name}
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = 'https://via.placeholder.com/600x600?text=Product+Image';
-                }}
-              />
-            ) : (
-              <div className="flex items-center justify-center h-full w-full text-9xl">
-                📦
-              </div>
-            )}
+          <figure className="rounded-lg overflow-hidden shadow-xl bg-base-300 aspect-square max-h-[400px] w-full">
+            <img 
+              src={product.productImage || product.image || 'https://images.unsplash.com/photo-1560393464-5c69a73c5770?w=600&h=600&fit=crop'} 
+              alt={product.productName || product.name || 'Product'}
+              className="w-full h-full object-cover"
+              crossOrigin="anonymous"
+              loading="lazy"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = 'https://via.placeholder.com/600x600/3b82f6/ffffff?text=' + encodeURIComponent(product.productName || 'Product');
+              }}
+            />
           </figure>
         </div>
 
