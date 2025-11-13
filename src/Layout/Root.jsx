@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Root = () => {
   const navigate = useNavigate();
@@ -29,6 +31,18 @@ const Root = () => {
 
   return (
     <div className="min-h-screen bg-base-200">
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme={theme === 'dark' ? 'dark' : 'light'}
+      />
       {/* Header - All in One Line */}
       <header className="navbar bg-base-100 shadow-lg px-4 py-3">
         {/* Mobile Menu Button */}

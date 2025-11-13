@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function MyExports() {
   const [products, setProducts] = useState([]);
@@ -49,15 +50,15 @@ function MyExports() {
       });
 
       if (response.ok) {
-        alert('Product deleted successfully!');
+        toast.success('Product deleted successfully!');
         fetchMyExports(); // Refresh list
       } else {
         const data = await response.json();
-        alert(data.error || 'Failed to delete product');
+        toast.error(data.error || 'Failed to delete product');
       }
     } catch (err) {
       console.error('Error deleting product:', err);
-      alert('Network error. Please try again.');
+      toast.error('Network error. Please try again.');
     }
   };
 
@@ -88,22 +89,22 @@ function MyExports() {
       });
 
       if (response.ok) {
-        alert('Product updated successfully!');
+        toast.success('Product updated successfully!');
         setEditingProduct(null);
         fetchMyExports(); // Refresh list
       } else {
         const data = await response.json();
-        alert(data.error || 'Failed to update product');
+        toast.error(data.error || 'Failed to update product');
       }
     } catch (err) {
       console.error('Error updating product:', err);
-      alert('Network error. Please try again.');
+      toast.error('Network error. Please try again.');
     }
   };
 
   const downloadCSV = () => {
     if (products.length === 0) {
-      alert('No data to download');
+      toast.warning('No data to download');
       return;
     }
 

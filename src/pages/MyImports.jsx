@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function MyImports() {
   const [imports, setImports] = useState([]);
@@ -48,15 +49,15 @@ function MyImports() {
       });
 
       if (response.ok) {
-        alert('Import removed successfully!');
+        toast.success('Import removed successfully!');
         fetchMyImports(); // Refresh list
       } else {
         const data = await response.json();
-        alert(data.error || 'Failed to remove import');
+        toast.error(data.error || 'Failed to remove import');
       }
     } catch (err) {
       console.error('Error removing import:', err);
-      alert('Network error. Please try again.');
+      toast.error('Network error. Please try again.');
     }
   };
 

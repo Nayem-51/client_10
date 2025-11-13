@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function AddExport() {
   const navigate = useNavigate();
@@ -9,13 +10,13 @@ function AddExport() {
     document.title = 'Add Export - Export Hub';
     
     if (!user.email) {
-      alert('Please login first');
+      toast.error('Please login first');
       navigate('/signin');
       return;
     }
     
     if (user.role !== 'exporter') {
-      alert('Only exporters can add products. Your role is: ' + (user.role || 'not set'));
+      toast.error('Only exporters can add products. Your role is: ' + (user.role || 'not set'));
       navigate('/');
     }
   }, []);
@@ -82,7 +83,7 @@ function AddExport() {
       const data = await response.json();
 
       if (response.ok) {
-        alert('Export added successfully to database!');
+        toast.success('Export added successfully to database!');
         navigate('/my-exports');
       } else {
         setError(data.error || 'Failed to add product');

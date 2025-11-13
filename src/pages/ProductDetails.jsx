@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function ProductDetails() {
   const { id } = useParams();
@@ -44,13 +45,13 @@ function ProductDetails() {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     
     if (!user.email) {
-      alert('Please login first to import products');
+      toast.error('Please login first to import products');
       navigate('/signin');
       return;
     }
 
     if (user.role !== 'importer') {
-      alert('Only importers can import products. Your role is: ' + (user.role || 'not set'));
+      toast.error('Only importers can import products. Your role is: ' + (user.role || 'not set'));
       return;
     }
 
@@ -60,7 +61,7 @@ function ProductDetails() {
 
   const handleImport = async () => {
     if (importQuantity < 1 || importQuantity > product.availableQuantity) {
-      alert(`Please enter a valid quantity between 1 and ${product.availableQuantity}`);
+      toast.warning(`Please enter a valid quantity between 1 and ${product.availableQuantity}`);
       return;
     }
 
@@ -92,16 +93,16 @@ function ProductDetails() {
       const data = await response.json();
 
       if (response.ok) {
-        alert('Product imported successfully!');
+        toast.success('Product imported successfully!');
         setShowModal(false); // Close modal
         fetchProductDetails(); // Refresh to show updated quantity
         setImportQuantity(1);
       } else {
-        alert(data.error || 'Failed to import product');
+        toast.error(data.error || 'Failed to import product');
       }
     } catch (err) {
       console.error('Error importing product:', err);
-      alert('Network error. Please try again.');
+      toast.error('Network error. Please try again.');
     } finally {
       setImporting(false);
     }
