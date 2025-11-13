@@ -136,20 +136,21 @@ function MyExports() {
             <thead>
               <tr>
                 <th>#</th>
-                <th>Product Name</th>
-                <th>Image</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Country</th>
-                <th>Rating</th>
-                <th>Actions</th>
+                <th>1. Product Image</th>
+                <th>2. Product Name</th>
+                <th>3. Price</th>
+                <th>4. Origin Country</th>
+                <th>5. Rating</th>
+                <th>6. Delete</th>
+                <th>7. Available Quantity</th>
+                <th>8. Update</th>
               </tr>
             </thead>
             <tbody>
               {products.map((product, index) => (
                 <tr key={product._id}>
                   <th>{index + 1}</th>
-                  <td>{product.productName}</td>
+                  {/* 1. Product Image */}
                   <td>
                     <img 
                       src={product.productImage || 'https://via.placeholder.com/48x48?text=No+Image'} 
@@ -161,25 +162,35 @@ function MyExports() {
                       }}
                     />
                   </td>
-                  <td>${product.price}</td>
-                  <td>{product.availableQuantity}</td>
+                  {/* 2. Product Name */}
+                  <td className="font-semibold">{product.productName}</td>
+                  {/* 3. Price */}
+                  <td className="text-primary font-bold">${product.price}</td>
+                  {/* 4. Origin Country */}
                   <td>{product.originCountry}</td>
+                  {/* 5. Rating */}
                   <td>⭐ {product.rating}</td>
+                  {/* 6. Delete Button */}
                   <td>
-                    <div className="flex gap-2">
-                      <button 
-                        className="btn btn-xs btn-info"
-                        onClick={() => handleEdit(product)}
-                      >
-                        Edit
-                      </button>
-                      <button 
-                        className="btn btn-xs btn-error"
-                        onClick={() => handleDelete(product._id)}
-                      >
-                        Delete
-                      </button>
-                    </div>
+                    <button 
+                      className="btn btn-xs btn-error"
+                      onClick={() => handleDelete(product._id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                  {/* 7. Available Quantity */}
+                  <td>
+                    <span className="badge badge-info">{product.availableQuantity} units</span>
+                  </td>
+                  {/* 8. Update Button */}
+                  <td>
+                    <button 
+                      className="btn btn-xs btn-success"
+                      onClick={() => handleEdit(product)}
+                    >
+                      Update
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -188,11 +199,11 @@ function MyExports() {
         </div>
       )}
 
-      {/* Edit Modal */}
+      {/* Update Modal */}
       {editingProduct && (
         <dialog open className="modal modal-open">
           <div className="modal-box w-11/12 max-w-2xl">
-            <h3 className="font-bold text-lg mb-4">Edit Product</h3>
+            <h3 className="font-bold text-lg mb-4">Update Product</h3>
             <form onSubmit={handleUpdate}>
               <div className="form-control">
                 <label className="label">
@@ -278,7 +289,7 @@ function MyExports() {
 
               <div className="modal-action">
                 <button type="submit" className="btn btn-primary">
-                  Update
+                  Submit
                 </button>
                 <button 
                   type="button" 

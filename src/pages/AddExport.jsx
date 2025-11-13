@@ -8,6 +8,7 @@ function AddExport() {
     destination: '',
     description: '',
     price: '',
+    rating: '4.5',
     productImage: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop'
   });
   const [loading, setLoading] = useState(false);
@@ -50,7 +51,7 @@ function AddExport() {
         productImage: formData.productImage || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop',
         price: parseFloat(formData.price),
         originCountry: formData.destination,
-        rating: 4.5, // Default rating
+        rating: parseFloat(formData.rating),
         availableQuantity: parseInt(formData.quantity),
         userEmail: user.email,
         userName: user.name || 'Anonymous'
@@ -240,6 +241,7 @@ function AddExport() {
               </label>
               <input
                 type="number"
+                step="0.01"
                 name="price"
                 placeholder="Enter price"
                 className="input input-bordered w-full"
@@ -247,6 +249,27 @@ function AddExport() {
                 onChange={handleChange}
                 required
               />
+            </div>
+
+            <div className="form-control mt-4">
+              <label className="label">
+                <span className="label-text font-semibold">Rating</span>
+              </label>
+              <input
+                type="number"
+                step="0.1"
+                min="0"
+                max="5"
+                name="rating"
+                placeholder="Enter rating (0-5)"
+                className="input input-bordered w-full"
+                value={formData.rating}
+                onChange={handleChange}
+                required
+              />
+              <label className="label">
+                <span className="label-text-alt">Rating should be between 0 and 5</span>
+              </label>
             </div>
 
             <div className="form-control mt-4">
@@ -271,7 +294,7 @@ function AddExport() {
                     Adding to database...
                   </>
                 ) : (
-                  'Add Export'
+                  'Add Export/Product'
                 )}
               </button>
             </div>
