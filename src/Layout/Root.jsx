@@ -56,8 +56,8 @@ const Root = () => {
       {/* Header - Logo + Navigation with Hamburger Menu */}
       <header className="bg-base-100 shadow-lg sticky top-0 z-50">
         <div className="navbar px-3 sm:px-4 lg:px-8 py-2 sm:py-3 max-w-[1920px] mx-auto">
-          {/* Left Side - Logo */}
-          <div className="flex-1">
+          {/* Left Side - Logo (Desktop Only) */}
+          <div className="flex-1 lg:flex-none">
             <Link to="/" onClick={closeMobileMenu} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
               <img 
                 src="/export_logo.jpeg" 
@@ -68,8 +68,8 @@ const Root = () => {
             </Link>
           </div>
 
-          {/* Center - Desktop Navigation */}
-          <div className="flex-none hidden lg:flex">
+          {/* Center - Desktop Navigation (Middle) */}
+          <div className="flex-1 hidden lg:flex justify-center">
             <nav className="flex items-center gap-1">
               <Link 
                 to="/all-products" 
