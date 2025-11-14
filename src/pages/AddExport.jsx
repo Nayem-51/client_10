@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { API_ENDPOINTS } from '../config/api';
 
 function AddExport() {
   const navigate = useNavigate();
@@ -67,7 +68,7 @@ function AddExport() {
         userName: user.name || 'Anonymous'
       };
 
-      const response = await fetch('http://localhost:3000/products', {
+      const response = await fetch(API_ENDPOINTS.PRODUCTS, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

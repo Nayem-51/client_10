@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { API_ENDPOINTS, API_URL } from '../config/api';
 
 function MyExports() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [editingProduct, setEditingProduct] = useState(null);
+  const [deleteId, setDeleteId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,7 +25,7 @@ function MyExports() {
         return;
       }
 
-      const response = await fetch(`http://localhost:3000/exports/${user.email}`);
+      const response = await fetch(API_ENDPOINTS.EXPORTS(user.email));
       const data = await response.json();
 
       if (response.ok) {
@@ -39,18 +41,21 @@ function MyExports() {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this product?')) {
-      return;
-    }
+  const confirmDelete = (id) => {
+    setDeleteId(id);
+  };
+
+  const handleDelete = async () => {
+    if (!deleteId) return;
 
     try {
-      const response = await fetch(`http://localhost:3000/products/${id}`, {
+      const response = await fetch(`${API_URL}/products/${deleteId}`, {
         method: 'DELETE',
       });
 
       if (response.ok) {
         toast.success('Product deleted successfully!');
+        setDeleteId(null);
         fetchMyExports(); // Refresh list
       } else {
         const data = await response.json();
@@ -80,7 +85,7 @@ function MyExports() {
         availableQuantity: parseInt(formData.get('availableQuantity'))
       };
 
-      const response = await fetch(`http://localhost:3000/products/${editingProduct._id}`, {
+      const response = await fetch(`${API_URL}/products/${editingProduct._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -231,7 +236,7 @@ function MyExports() {
                   <td>
                     <button 
                       className="btn btn-xs btn-error"
-                      onClick={() => handleDelete(product._id)}
+                      onClick={() => confirmDelete(product._id)}
                     >
                       Delete
                     </button>
@@ -303,7 +308,7 @@ function MyExports() {
                   </button>
                   <button 
                     className="btn btn-sm btn-error flex-1"
-                    onClick={() => handleDelete(product._id)}
+                    onClick={() => confirmDelete(product._id)}
                   >
                     Delete
                   </button>
@@ -419,6 +424,33 @@ function MyExports() {
           </div>
           <form method="dialog" className="modal-backdrop">
             <button onClick={() => setEditingProduct(null)}>close</button>
+          </form>
+        </dialog>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {deleteId && (
+        <dialog open className="modal modal-open">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg mb-4">Confirm Deletion</h3>
+            <p className="py-4">Are you sure you want to delete this product? This action cannot be undone.</p>
+            <div className="modal-action">
+              <button 
+                className="btn btn-error"
+                onClick={handleDelete}
+              >
+                Yes, Delete
+              </button>
+              <button 
+                className="btn"
+                onClick={() => setDeleteId(null)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+          <form method="dialog" className="modal-backdrop">
+            <button onClick={() => setDeleteId(null)}>close</button>
           </form>
         </dialog>
       )}

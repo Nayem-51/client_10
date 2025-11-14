@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '../firebase/firebase.init';
+import { API_ENDPOINTS } from '../config/api';
+import { toast } from 'react-toastify';
 
 function SignIn() {
   const [formData, setFormData] = useState({
@@ -32,7 +34,7 @@ function SignIn() {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3000/login', {
+      const response = await fetch(API_ENDPOINTS.LOGIN, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -44,6 +46,7 @@ function SignIn() {
         const data = await response.json();
         localStorage.setItem('token', data.token || 'dummy-token');
         localStorage.setItem('user', JSON.stringify(data.user || { email: formData.email, name: formData.email.split('@')[0] }));
+        toast.success('Login successful! Welcome back!');
         navigate(from, { replace: true });
       } else {
         const data = await response.json();
@@ -85,7 +88,7 @@ function SignIn() {
       localStorage.setItem('user', JSON.stringify(userData));
       
       try {
-        const backendResponse = await fetch('http://localhost:3000/users', {
+        const backendResponse = await fetch(API_ENDPOINTS.USERS, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -103,6 +106,7 @@ function SignIn() {
         console.log('Backend registration (optional):', backendError);
       }
       
+      toast.success('Google sign-in successful! Welcome!');
       console.log('Navigating to:', from);
       navigate(from, { replace: true });
     } catch (err) {

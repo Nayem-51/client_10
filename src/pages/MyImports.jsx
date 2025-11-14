@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { API_ENDPOINTS } from '../config/api';
 
 function MyImports() {
   const [imports, setImports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [deleteId, setDeleteId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,7 +24,7 @@ function MyImports() {
         return;
       }
 
-      const response = await fetch(`http://localhost:3000/imports/${user.email}`);
+      const response = await fetch(API_ENDPOINTS.IMPORTS(user.email));
       const data = await response.json();
 
       if (response.ok) {
@@ -42,18 +44,21 @@ function MyImports() {
     }
   };
 
-  const handleRemove = async (id) => {
-    if (!window.confirm('Are you sure you want to remove this import?')) {
-      return;
-    }
+  const confirmRemove = (id) => {
+    setDeleteId(id);
+  };
+
+  const handleRemove = async () => {
+    if (!deleteId) return;
 
     try {
-      const response = await fetch(`http://localhost:3000/imports/${id}`, {
+      const response = await fetch(`${API_ENDPOINTS.IMPORT_PRODUCT}/${deleteId}`, {
         method: 'DELETE',
       });
 
       if (response.ok) {
         toast.success('Import removed successfully!');
+        setDeleteId(null);
         fetchMyImports(); // Refresh list
       } else {
         const data = await response.json();
@@ -131,7 +136,7 @@ function MyImports() {
                   <td>
                     <button 
                       className="btn btn-xs btn-error"
-                      onClick={() => handleRemove(importItem._id)}
+                      onClick={() => confirmRemove(importItem._id)}
                     >
                       Remove
                     </button>
@@ -198,7 +203,7 @@ function MyImports() {
                 <div className="flex flex-col gap-2 mt-4">
                   <button 
                     className="btn btn-sm btn-error w-full"
-                    onClick={() => handleRemove(importItem._id)}
+                    onClick={() => confirmRemove(importItem._id)}
                   >
                     6. Remove
                   </button>
@@ -225,6 +230,33 @@ function MyImports() {
           ))}
         </div>
         </>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {deleteId && (
+        <dialog open className="modal modal-open">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg mb-4">Confirm Removal</h3>
+            <p className="py-4">Are you sure you want to remove this import? This action cannot be undone.</p>
+            <div className="modal-action">
+              <button 
+                className="btn btn-error"
+                onClick={handleRemove}
+              >
+                Yes, Remove
+              </button>
+              <button 
+                className="btn"
+                onClick={() => setDeleteId(null)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+          <form method="dialog" className="modal-backdrop">
+            <button onClick={() => setDeleteId(null)}>close</button>
+          </form>
+        </dialog>
       )}
     </div>
   );

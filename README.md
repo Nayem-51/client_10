@@ -1,6 +1,10 @@
 # 🌍 Export Hub - Global Trade Management Platform
 
-**Live Site:** [URL will be added after deployment]
+**Live Site:** [Add your deployed URL here after deployment]
+
+**Demo Credentials (If needed):**
+- Email: demo@exporthub.com
+- Password: Demo123
 
 A modern web platform where users can manage exports, browse global products, and import any product into their personal "My Imports" section with one click. Clean UI, real-time sync, and secure user data.
 
@@ -123,6 +127,60 @@ A modern web platform where users can manage exports, browse global products, an
    ```bash
    npm run build
    ```
+
+---
+
+## 🚀 Deployment Guide
+
+### Deploy Client to Netlify
+
+1. **Build the project**
+   ```bash
+   npm run build
+   ```
+
+2. **Deploy to Netlify**
+   - Create account at [Netlify](https://netlify.com)
+   - Drag and drop the `dist` folder
+   - Or use Netlify CLI:
+     ```bash
+     npm install -g netlify-cli
+     netlify deploy --prod
+     ```
+
+3. **Add Firebase domain to authorized domains**
+   - Go to Firebase Console → Authentication → Settings
+   - Add your Netlify domain (e.g., `your-app.netlify.app`)
+
+4. **Set environment variables in Netlify**
+   - Go to Site settings → Environment variables
+   - Add `VITE_API_URL` with your Vercel backend URL
+   - Add Firebase configuration variables
+
+### Deploy Server to Vercel
+
+1. **Navigate to server directory**
+   ```bash
+   cd server_10
+   ```
+
+2. **Install Vercel CLI**
+   ```bash
+   npm install -g vercel
+   ```
+
+3. **Deploy**
+   ```bash
+   vercel --prod
+   ```
+
+4. **Add environment variables**
+   - Go to Vercel dashboard → Settings → Environment Variables
+   - Add `MONGODB_URI` with your MongoDB Atlas connection string
+
+5. **Update client API_URL**
+   - Update your Netlify environment variable `VITE_API_URL` with the Vercel URL
+   - Redeploy the client
 
 ---
 

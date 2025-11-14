@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { API_URL } from '../config/api';
 
 function AllProducts() {
   const [products, setProducts] = useState([]);
@@ -20,7 +21,7 @@ function AllProducts() {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const url = `http://localhost:3000/products?page=${page}&limit=12&search=${search}`;
+      const url = `${API_URL}/products?page=${page}&limit=12&search=${search}`;
       const response = await fetch(url);
       
       if (response.ok) {

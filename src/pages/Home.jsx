@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { API_ENDPOINTS } from '../config/api';
 
 function Home() {
   const [products, setProducts] = useState([]);
@@ -13,7 +14,7 @@ function Home() {
 
   const fetchLatestProducts = async () => {
     try {
-      const response = await fetch('http://localhost:3000/products/latest');
+      const response = await fetch(API_ENDPOINTS.PRODUCTS_LATEST);
       if (response.ok) {
         const data = await response.json();
         setProducts(data);

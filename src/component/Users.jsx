@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { API_ENDPOINTS } from '../config/api';
+
 const newUser={name,email};
-fetch("http://localhost:3000/users", {
+fetch(API_ENDPOINTS.USERS, {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -18,7 +20,7 @@ function Users() {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('http://localhost:3000/users');
+      const response = await fetch(API_ENDPOINTS.USERS);
       if (response.ok) {
         const data = await response.json();
         setUsers(data);

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { API_ENDPOINTS } from '../config/api';
 
 function ProductDetails() {
   const { id } = useParams();
@@ -27,7 +28,7 @@ function ProductDetails() {
   const fetchProductDetails = async () => {
     try {
       console.log('Fetching product with ID:', id);
-      const response = await fetch(`http://localhost:3000/products/${id}`);
+      const response = await fetch(API_ENDPOINTS.PRODUCT_BY_ID(id));
       console.log('Response status:', response.status);
       
       if (response.ok) {
@@ -83,7 +84,7 @@ function ProductDetails() {
         userName: user.name
       };
 
-      const response = await fetch('http://localhost:3000/imports', {
+      const response = await fetch(API_ENDPOINTS.IMPORT_PRODUCT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

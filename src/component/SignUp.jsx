@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '../firebase/firebase.init';
+import { API_ENDPOINTS } from '../config/api';
+import { toast } from 'react-toastify';
 
 function SignUp() {
   const [formData, setFormData] = useState({
@@ -69,7 +71,7 @@ function SignUp() {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3000/users', {
+      const response = await fetch(API_ENDPOINTS.USERS, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -90,6 +92,7 @@ function SignUp() {
           email: formData.email,
           image: formData.photoURL
         }));
+        toast.success('Registration successful! Welcome to Export Hub!');
         navigate('/');
       } else {
         const data = await response.json();
@@ -131,7 +134,7 @@ function SignUp() {
       localStorage.setItem('user', JSON.stringify(userData));
       
       try {
-        const backendResponse = await fetch('http://localhost:3000/users', {
+        const backendResponse = await fetch(API_ENDPOINTS.USERS, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -149,6 +152,7 @@ function SignUp() {
         console.log('Backend registration (optional):', backendError);
       }
       
+      toast.success('Account created successfully! Welcome to Export Hub!');
       console.log('Navigating to home...');
       navigate('/');
     } catch (err) {
