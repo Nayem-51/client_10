@@ -68,29 +68,29 @@ function AllProducts() {
   };
 
   return (
-    <div className="py-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">All Products</h1>
-        <span className="text-sm opacity-70">
-          {pagination.total ? `${pagination.total} products found` : ''}
+    <div className="py-4 px-2 sm:px-4 md:py-6">
+      <div className="flex justify-between items-center mb-4 md:mb-6">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">All Products</h1>
+        <span className="text-xs sm:text-sm opacity-70">
+          {pagination.total ? `${pagination.total} products` : ''}
         </span>
       </div>
 
       {/* Search Bar */}
-      <div className="mb-6">
+      <div className="mb-4 md:mb-6">
         <form onSubmit={handleSearch} className="flex gap-2">
           <input
             type="text"
-            placeholder="Search by product name or country..."
-            className="input input-bordered flex-1"
+            placeholder="Search products..."
+            className="input input-bordered input-sm sm:input-md flex-1 text-sm sm:text-base"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <button type="submit" className="btn btn-primary">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <button type="submit" className="btn btn-primary btn-sm sm:btn-md">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
-            Search
+            <span className="hidden sm:inline ml-2">Search</span>
           </button>
         </form>
       </div>
@@ -118,11 +118,11 @@ function AllProducts() {
         </div>
       ) : (
         <>
-          {/* Products Grid - 3 Column Layout */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Products Grid - 3 Column Layout as per requirements */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {products.map((product) => (
               <div key={product._id} className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow h-full flex flex-col">
-                <figure className="h-56 w-full overflow-hidden bg-base-300 flex-shrink-0 rounded-t-2xl">
+                <figure className="h-48 sm:h-52 md:h-56 w-full overflow-hidden bg-base-300 flex-shrink-0 rounded-t-2xl">
                   <img 
                     src={product.productImage || product.image || 'https://images.unsplash.com/photo-1560393464-5c69a73c5770?w=400&h=300&fit=crop'} 
                     alt={product.productName || product.name || 'Product'}
@@ -135,51 +135,51 @@ function AllProducts() {
                     }}
                   />
                 </figure>
-                <div className="card-body p-4 flex flex-col flex-grow">
-                  <h2 className="card-title text-base">
-                    {product.productName || product.name}
+                <div className="card-body p-3 sm:p-4 flex flex-col flex-grow">
+                  <h2 className="card-title text-sm sm:text-base md:text-lg flex-wrap">
+                    <span className="break-words">{product.productName || product.name}</span>
                     {product.availableQuantity < 10 && (
                       <div className="badge badge-warning badge-sm">Low Stock</div>
                     )}
                   </h2>
                   
-                  <div className="space-y-1 text-sm">
+                  <div className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
                     <div className="flex justify-between items-center">
-                      <span className="font-semibold text-primary text-lg">
+                      <span className="font-semibold text-primary text-lg sm:text-xl">
                         ${product.price}
                       </span>
                     </div>
                     
-                    <div className="flex items-center gap-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
-                      <span className="opacity-80 text-xs">{product.originCountry}</span>
+                      <span className="opacity-80 truncate">{product.originCountry}</span>
                     </div>
                     
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5 sm:gap-2">
                       <div className="flex items-center">
                         {renderStars(product.rating || 0)}
                       </div>
-                      <span className="text-xs opacity-80">({product.rating || 0})</span>
+                      <span className="text-xs sm:text-sm opacity-80">({product.rating || 0})</span>
                     </div>
                     
-                    <div className="flex items-center gap-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                       </svg>
-                      <span className="opacity-80 text-xs">
+                      <span className="opacity-80 truncate">
                         {product.availableQuantity} units
                       </span>
                     </div>
                   </div>
                   
-                  <div className="card-actions justify-end mt-auto">
+                  <div className="card-actions justify-end mt-auto pt-2">
                     <Link 
                       to={`/product/${product._id}`} 
-                      className="btn btn-primary btn-sm w-full"
+                      className="btn btn-primary btn-xs sm:btn-sm w-full"
                     >
-                      See Details
+                      <span className="text-xs sm:text-sm">See Details</span>
                     </Link>
                   </div>
                 </div>
@@ -189,22 +189,25 @@ function AllProducts() {
 
           {/* Pagination */}
           {pagination.totalPages > 1 && (
-            <div className="flex justify-center mt-8">
+            <div className="flex justify-center mt-6 sm:mt-8">
               <div className="join">
                 <button 
-                  className="join-item btn"
+                  className="join-item btn btn-xs sm:btn-sm md:btn-md"
                   disabled={page === 1}
                   onClick={() => setPage(page - 1)}
+                  aria-label="Previous page"
                 >
                   «
                 </button>
-                <button className="join-item btn">
-                  Page {page} of {pagination.totalPages}
+                <button className="join-item btn btn-xs sm:btn-sm md:btn-md pointer-events-none">
+                  <span className="hidden sm:inline">Page {page} of {pagination.totalPages}</span>
+                  <span className="sm:hidden">{page}/{pagination.totalPages}</span>
                 </button>
                 <button 
-                  className="join-item btn"
+                  className="join-item btn btn-xs sm:btn-sm md:btn-md"
                   disabled={page === pagination.totalPages}
                   onClick={() => setPage(page + 1)}
+                  aria-label="Next page"
                 >
                   »
                 </button>

@@ -74,8 +74,8 @@ function MyImports() {
   }
 
   return (
-    <div className="py-6">
-      <h1 className="text-3xl font-bold mb-6">My Imports</h1>
+    <div className="py-4 px-2 sm:px-4 md:py-6">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6">My Imports</h1>
 
       {error && (
         <div className="alert alert-error mb-4">

@@ -146,9 +146,9 @@ function MyExports() {
   }
 
   return (
-    <div className="py-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
-        <h1 className="text-3xl font-bold">My Exports</h1>
+    <div className="py-4 px-2 sm:px-4 md:py-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 md:mb-6">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">My Exports</h1>
         <div className="flex gap-2">
           <button 
             onClick={downloadCSV} 
@@ -318,65 +318,65 @@ function MyExports() {
       {/* Update Modal */}
       {editingProduct && (
         <dialog open className="modal modal-open">
-          <div className="modal-box w-11/12 max-w-2xl">
-            <h3 className="font-bold text-lg mb-4">Update Product</h3>
+          <div className="modal-box w-11/12 max-w-2xl max-h-[90vh] overflow-y-auto">
+            <h3 className="font-bold text-base sm:text-lg mb-3 sm:mb-4">Update Product</h3>
             <form onSubmit={handleUpdate}>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Product Name</span>
+                  <span className="label-text text-sm sm:text-base">Product Name</span>
                 </label>
                 <input
                   type="text"
                   name="productName"
                   defaultValue={editingProduct.productName}
-                  className="input input-bordered"
+                  className="input input-bordered input-sm sm:input-md"
                   required
                 />
               </div>
 
-              <div className="form-control mt-4">
+              <div className="form-control mt-3 sm:mt-4">
                 <label className="label">
-                  <span className="label-text">Image URL</span>
+                  <span className="label-text text-sm sm:text-base">Image URL</span>
                 </label>
                 <input
                   type="url"
                   name="productImage"
                   defaultValue={editingProduct.productImage}
-                  className="input input-bordered"
+                  className="input input-bordered input-sm sm:input-md"
                   required
                 />
               </div>
 
-              <div className="form-control mt-4">
+              <div className="form-control mt-3 sm:mt-4">
                 <label className="label">
-                  <span className="label-text">Price</span>
+                  <span className="label-text text-sm sm:text-base">Price</span>
                 </label>
                 <input
                   type="number"
                   step="0.01"
                   name="price"
                   defaultValue={editingProduct.price}
-                  className="input input-bordered"
+                  className="input input-bordered input-sm sm:input-md"
                   required
                 />
               </div>
 
-              <div className="form-control mt-4">
+              <div className="form-control mt-3 sm:mt-4">
                 <label className="label">
-                  <span className="label-text">Country</span>
+                  <span className="label-text text-sm sm:text-base">Country</span>
                 </label>
                 <input
                   type="text"
                   name="originCountry"
                   defaultValue={editingProduct.originCountry}
-                  className="input input-bordered"
+                  className="input input-bordered input-sm sm:input-md"
                   required
                 />
               </div>
 
-              <div className="form-control mt-4">
+              <div className="form-control mt-3 sm:mt-4">
                 <label className="label">
-                  <span className="label-text">Rating</span>
+                  <span className="label-text text-sm sm:text-base">Rating</span>
                 </label>
                 <input
                   type="number"
@@ -385,34 +385,34 @@ function MyExports() {
                   max="5"
                   name="rating"
                   defaultValue={editingProduct.rating}
-                  className="input input-bordered"
+                  className="input input-bordered input-sm sm:input-md"
                   required
                 />
               </div>
 
-              <div className="form-control mt-4">
+              <div className="form-control mt-3 sm:mt-4">
                 <label className="label">
-                  <span className="label-text">Available Quantity</span>
+                  <span className="label-text text-sm sm:text-base">Available Quantity</span>
                 </label>
                 <input
                   type="number"
                   name="availableQuantity"
                   defaultValue={editingProduct.availableQuantity}
-                  className="input input-bordered"
+                  className="input input-bordered input-sm sm:input-md"
                   required
                 />
               </div>
 
-              <div className="modal-action">
-                <button type="submit" className="btn btn-primary">
-                  Submit
+              <div className="modal-action flex-col sm:flex-row gap-2 mt-4 sm:mt-6">
+                <button type="submit" className="btn btn-primary btn-sm sm:btn-md w-full sm:w-auto order-1">
+                  <span className="text-xs sm:text-sm">Submit</span>
                 </button>
                 <button 
                   type="button" 
-                  className="btn"
+                  className="btn btn-sm sm:btn-md w-full sm:w-auto order-2"
                   onClick={() => setEditingProduct(null)}
                 >
-                  Cancel
+                  <span className="text-xs sm:text-sm">Cancel</span>
                 </button>
               </div>
             </form>

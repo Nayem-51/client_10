@@ -131,10 +131,10 @@ function SignIn() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base-200 py-12 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-base-200 py-8 px-4 sm:py-12">
       <div className="card w-full max-w-md bg-base-100 shadow-2xl">
-        <div className="card-body">
-          <h2 className="card-title text-3xl font-bold text-center mb-6">Login</h2>
+        <div className="card-body p-6 sm:p-8">
+          <h2 className="card-title text-2xl sm:text-3xl font-bold text-center justify-center mb-4 sm:mb-6">Login</h2>
           
           {error && (
             <div className="alert alert-error">

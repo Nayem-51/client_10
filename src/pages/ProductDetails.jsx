@@ -179,13 +179,13 @@ function ProductDetails() {
   }
 
   return (
-    <div className="py-6">
+    <div className="py-4 px-2 sm:px-4 md:py-6">
       {/* Breadcrumb */}
-      <div className="text-sm breadcrumbs mb-4 md:mb-6">
+      <div className="text-xs sm:text-sm breadcrumbs mb-3 md:mb-6">
         <ul>
           <li><Link to="/">Home</Link></li>
           <li><Link to="/all-products">Products</Link></li>
-          <li className="hidden sm:inline">{product.productName || product.name}</li>
+          <li className="hidden sm:inline truncate max-w-[150px] sm:max-w-none">{product.productName || product.name}</li>
         </ul>
       </div>
 
@@ -327,18 +327,18 @@ function ProductDetails() {
       {/* Import Modal */}
       {showModal && (
         <dialog open className="modal modal-open">
-          <div className="modal-box">
-            <h3 className="font-bold text-lg mb-4">Import Product</h3>
+          <div className="modal-box w-11/12 max-w-lg">
+            <h3 className="font-bold text-base sm:text-lg mb-3 sm:mb-4">Import Product</h3>
             
-            <div className="mb-4">
-              <p className="text-sm opacity-70 mb-2">Product: <span className="font-semibold">{product.productName}</span></p>
-              <p className="text-sm opacity-70 mb-2">Price: <span className="font-semibold text-primary">${product.price}</span></p>
-              <p className="text-sm opacity-70 mb-4">Available: <span className="font-semibold text-success">{product.availableQuantity} units</span></p>
+            <div className="mb-3 sm:mb-4 space-y-1.5 sm:space-y-2">
+              <p className="text-xs sm:text-sm opacity-70">Product: <span className="font-semibold">{product.productName}</span></p>
+              <p className="text-xs sm:text-sm opacity-70">Price: <span className="font-semibold text-primary">${product.price}</span></p>
+              <p className="text-xs sm:text-sm opacity-70">Available: <span className="font-semibold text-success">{product.availableQuantity} units</span></p>
             </div>
 
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-semibold">Enter Quantity to Import</span>
+                <span className="label-text text-sm sm:text-base font-semibold">Enter Quantity to Import</span>
               </label>
               <input
                 type="number"
@@ -346,11 +346,11 @@ function ProductDetails() {
                 max={product.availableQuantity}
                 value={importQuantity}
                 onChange={(e) => setImportQuantity(parseInt(e.target.value) || 1)}
-                className="input input-bordered w-full"
+                className="input input-bordered input-sm sm:input-md w-full"
                 placeholder={`Max: ${product.availableQuantity}`}
               />
               <label className="label">
-                <span className="label-text-alt text-warning">
+                <span className="label-text-alt text-xs text-warning">
                   ⚠️ You can import maximum {product.availableQuantity} units
                 </span>
               </label>
@@ -358,37 +358,37 @@ function ProductDetails() {
 
             {/* Import Limit Warning */}
             {importQuantity > product.availableQuantity && (
-              <div className="alert alert-error mt-3">
-                <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+              <div className="alert alert-error mt-2 sm:mt-3 py-2 sm:py-3">
+                <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span>Quantity exceeds available stock! Maximum: {product.availableQuantity}</span>
+                <span className="text-xs sm:text-sm">Quantity exceeds available stock! Maximum: {product.availableQuantity}</span>
               </div>
             )}
 
-            <div className="modal-action">
+            <div className="modal-action flex-col sm:flex-row gap-2 mt-4 sm:mt-6">
               <button 
                 type="button"
-                className="btn btn-primary"
+                className="btn btn-primary btn-sm sm:btn-md w-full sm:w-auto order-1"
                 onClick={handleImport}
                 disabled={importing || importQuantity < 1 || importQuantity > product.availableQuantity}
               >
                 {importing ? (
                   <>
-                    <span className="loading loading-spinner"></span>
-                    Importing...
+                    <span className="loading loading-spinner loading-xs sm:loading-sm"></span>
+                    <span className="text-xs sm:text-sm">Importing...</span>
                   </>
                 ) : (
-                  'Submit'
+                  <span className="text-xs sm:text-sm">Submit</span>
                 )}
               </button>
               <button 
                 type="button"
-                className="btn"
+                className="btn btn-sm sm:btn-md w-full sm:w-auto order-2"
                 onClick={() => setShowModal(false)}
                 disabled={importing}
               >
-                Cancel
+                <span className="text-xs sm:text-sm">Cancel</span>
               </button>
             </div>
           </div>

@@ -92,11 +92,11 @@ function AddExport() {
   };
 
   return (
-    <div className="py-6 max-w-2xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Add New Export</h1>
+    <div className="py-4 px-2 sm:px-4 md:py-6 max-w-2xl mx-auto">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6">Add New Export</h1>
       
       <div className="card bg-base-100 shadow-xl">
-        <div className="card-body">
+        <div className="card-body p-4 sm:p-6 md:p-8">
           {error && (
             <div className="alert alert-error mb-4">
               <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
@@ -353,14 +353,14 @@ function AddExport() {
             </div>
 
             <div className="form-control mt-6">
-              <button type="submit" className="btn btn-primary w-full" disabled={loading}>
+              <button type="submit" className="btn btn-primary btn-sm sm:btn-md w-full" disabled={loading}>
                 {loading ? (
                   <>
-                    <span className="loading loading-spinner"></span>
-                    Adding to database...
+                    <span className="loading loading-spinner loading-sm"></span>
+                    <span className="ml-2 text-sm sm:text-base">Adding...</span>
                   </>
                 ) : (
-                  'g. Add Export/Product'
+                  <span className="text-sm sm:text-base">g. Add Export/Product</span>
                 )}
               </button>
             </div>
