@@ -9,6 +9,7 @@ const Root = () => {
   const user = JSON.parse(localStorage.getItem('user') || 'null');
   
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -18,11 +19,20 @@ const Root = () => {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    setIsMobileMenuOpen(false);
     navigate('/signin');
   };
 
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light');
+  };
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
   };
 
   const isActive = (path) => {
@@ -43,54 +53,53 @@ const Root = () => {
         pauseOnHover
         theme={theme === 'dark' ? 'dark' : 'light'}
       />
-      {/* Header - Logo + Navigation on the left, Login/Register on the right */}
+      {/* Header - Logo + Navigation with Hamburger Menu */}
       <header className="bg-base-100 shadow-lg sticky top-0 z-50">
-        <div className="navbar px-4 sm:px-6 lg:px-8 py-3 max-w-[1920px] mx-auto">
-          {/* Left Side - Logo + Navigation */}
+        <div className="navbar px-3 sm:px-4 lg:px-8 py-2 sm:py-3 max-w-[1920px] mx-auto">
+          {/* Left Side - Logo */}
           <div className="flex-1">
-            <div className="flex items-center gap-6">
-              {/* Logo */}
-              <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                <img 
-                  src="/export_logo.jpeg" 
-                  alt="Export Hub Logo" 
-                  className="h-10 w-10 rounded-lg"
-                />
-                <span className="text-xl font-bold text-primary hidden sm:inline">Export Hub</span>
-              </Link>
-              
-              {/* Navigation Links - Desktop */}
-              <nav className="hidden lg:flex items-center gap-2">
-                <Link 
-                  to="/all-products" 
-                  className={`btn btn-ghost btn-sm ${isActive('/all-products')}`}
-                >
-                  All Products
-                </Link>
-                <Link 
-                  to="/my-exports" 
-                  className={`btn btn-ghost btn-sm ${isActive('/my-exports')}`}
-                >
-                  My Exports
-                </Link>
-                <Link 
-                  to="/my-imports" 
-                  className={`btn btn-ghost btn-sm ${isActive('/my-imports')}`}
-                >
-                  My Imports
-                </Link>
-                <Link 
-                  to="/add-export" 
-                  className={`btn btn-ghost btn-sm ${isActive('/add-export')}`}
-                >
-                  Add Export
-                </Link>
-              </nav>
-            </div>
+            <Link to="/" onClick={closeMobileMenu} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+              <img 
+                src="/export_logo.jpeg" 
+                alt="Export Hub Logo" 
+                className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg"
+              />
+              <span className="text-lg sm:text-xl font-bold text-primary">Export Hub</span>
+            </Link>
           </div>
 
-          {/* Right Side - Theme Toggle + Login/Register OR Logout + User Image */}
-          <div className="flex-none">
+          {/* Center - Desktop Navigation */}
+          <div className="flex-none hidden lg:flex">
+            <nav className="flex items-center gap-1">
+              <Link 
+                to="/all-products" 
+                className={`btn btn-ghost btn-sm ${isActive('/all-products')}`}
+              >
+                All Products
+              </Link>
+              <Link 
+                to="/my-exports" 
+                className={`btn btn-ghost btn-sm ${isActive('/my-exports')}`}
+              >
+                My Exports
+              </Link>
+              <Link 
+                to="/my-imports" 
+                className={`btn btn-ghost btn-sm ${isActive('/my-imports')}`}
+              >
+                My Imports
+              </Link>
+              <Link 
+                to="/add-export" 
+                className={`btn btn-ghost btn-sm ${isActive('/add-export')}`}
+              >
+                Add Export
+              </Link>
+            </nav>
+          </div>
+
+          {/* Right Side - Desktop Actions */}
+          <div className="flex-none hidden lg:flex">
             <div className="flex items-center gap-2">
               {/* Theme Toggle */}
               <button 
@@ -110,88 +119,224 @@ const Root = () => {
               </button>
 
               {user ? (
-              <>
-                {/* Logged in user's image */}
-                <div className="avatar">
-                  <div className="w-10 h-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                    {user.image ? (
-                      <img 
-                        src={user.image} 
-                        alt={user.name || 'User'} 
-                        referrerPolicy="no-referrer"
-                      />
-                    ) : (
-                      <div className="bg-primary text-primary-content w-full h-full flex items-center justify-center text-lg font-bold">
-                        {user.name?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || 'U'}
-                      </div>
-                    )}
+                <>
+                  {/* User Avatar */}
+                  <div className="avatar">
+                    <div className="w-9 h-9 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                      {user.image ? (
+                        <img 
+                          src={user.image} 
+                          alt={user.name || 'User'} 
+                          referrerPolicy="no-referrer"
+                        />
+                      ) : (
+                        <div className="bg-primary text-primary-content w-full h-full flex items-center justify-center text-base font-bold">
+                          {user.name?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || 'U'}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-                
-                {/* Logout Button */}
-                <button 
-                  onClick={handleLogout} 
-                  className="btn btn-error btn-sm"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                {/* Login/Register buttons */}
-                <Link to="/signin" className="btn btn-ghost btn-sm">
-                  Login
-                </Link>
-                <Link to="/signup" className="btn btn-primary btn-sm">
-                  Register
-                </Link>
-              </>
-            )}
+                  
+                  {/* Logout Button */}
+                  <button 
+                    onClick={handleLogout} 
+                    className="btn btn-error btn-sm"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  {/* Login/Register buttons */}
+                  <Link to="/signin" className="btn btn-ghost btn-sm">
+                    Login
+                  </Link>
+                  <Link to="/signup" className="btn btn-primary btn-sm">
+                    Register
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Mobile - Right Side with Hamburger */}
+          <div className="flex-none lg:hidden">
+            <div className="flex items-center gap-2">
+              {/* Theme Toggle Mobile */}
+              <button 
+                onClick={toggleTheme}
+                className="btn btn-ghost btn-circle btn-sm"
+                aria-label="Toggle theme"
+              >
+                {theme === 'light' ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                )}
+              </button>
+
+              {/* Hamburger Menu Button */}
+              <button 
+                onClick={toggleMobileMenu}
+                className="btn btn-ghost btn-square btn-sm"
+                aria-label="Toggle menu"
+              >
+                {isMobileMenuOpen ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                )}
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Mobile Navigation */}
-        <nav className="lg:hidden border-t border-base-300 bg-base-100">
-          <div className="grid grid-cols-4 gap-1 p-2">
-            <Link 
-              to="/all-products" 
-              className={`btn btn-ghost btn-xs h-auto py-2 flex flex-col items-center ${isActive('/all-products')}`}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-              </svg>
-              <span className="text-[10px]">Products</span>
-            </Link>
-            <Link 
-              to="/my-exports" 
-              className={`btn btn-ghost btn-xs h-auto py-2 flex flex-col items-center ${isActive('/my-exports')}`}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
-              </svg>
-              <span className="text-[10px]">Exports</span>
-            </Link>
-            <Link 
-              to="/my-imports" 
-              className={`btn btn-ghost btn-xs h-auto py-2 flex flex-col items-center ${isActive('/my-imports')}`}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H3" />
-              </svg>
-              <span className="text-[10px]">Imports</span>
-            </Link>
-            <Link 
-              to="/add-export" 
-              className={`btn btn-ghost btn-xs h-auto py-2 flex flex-col items-center ${isActive('/add-export')}`}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
-              <span className="text-[10px]">Add</span>
-            </Link>
+        {/* Mobile Drawer Menu */}
+        <div className={`lg:hidden fixed inset-0 z-50 transition-all duration-300 ${isMobileMenuOpen ? 'visible' : 'invisible'}`}>
+          {/* Overlay */}
+          <div 
+            className={`absolute inset-0 bg-black transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-50' : 'opacity-0'}`}
+            onClick={closeMobileMenu}
+          ></div>
+          
+          {/* Drawer */}
+          <div className={`absolute right-0 top-0 h-full w-72 bg-base-100 shadow-2xl transform transition-transform duration-300 ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+            {/* Drawer Header */}
+            <div className="flex items-center justify-between p-4 border-b border-base-300">
+              <div className="flex items-center gap-2">
+                <img 
+                  src="/export_logo.jpeg" 
+                  alt="Export Hub Logo" 
+                  className="h-8 w-8 rounded-lg"
+                />
+                <span className="text-lg font-bold text-primary">Menu</span>
+              </div>
+              <button 
+                onClick={closeMobileMenu}
+                className="btn btn-ghost btn-circle btn-sm"
+                aria-label="Close menu"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* User Info */}
+            {user && (
+              <div className="p-4 border-b border-base-300">
+                <div className="flex items-center gap-3">
+                  <div className="avatar">
+                    <div className="w-12 h-12 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                      {user.image ? (
+                        <img 
+                          src={user.image} 
+                          alt={user.name || 'User'} 
+                          referrerPolicy="no-referrer"
+                        />
+                      ) : (
+                        <div className="bg-primary text-primary-content w-full h-full flex items-center justify-center text-xl font-bold">
+                          {user.name?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || 'U'}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold truncate">{user.name || 'User'}</p>
+                    <p className="text-xs opacity-70 truncate">{user.email}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Navigation Links */}
+            <nav className="p-4 space-y-2">
+              <Link 
+                to="/all-products" 
+                onClick={closeMobileMenu}
+                className={`btn btn-ghost w-full justify-start gap-3 ${isActive('/all-products')}`}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+                All Products
+              </Link>
+              
+              <Link 
+                to="/my-exports" 
+                onClick={closeMobileMenu}
+                className={`btn btn-ghost w-full justify-start gap-3 ${isActive('/my-exports')}`}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+                </svg>
+                My Exports
+              </Link>
+              
+              <Link 
+                to="/my-imports" 
+                onClick={closeMobileMenu}
+                className={`btn btn-ghost w-full justify-start gap-3 ${isActive('/my-imports')}`}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H3" />
+                </svg>
+                My Imports
+              </Link>
+              
+              <Link 
+                to="/add-export" 
+                onClick={closeMobileMenu}
+                className={`btn btn-ghost w-full justify-start gap-3 ${isActive('/add-export')}`}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                Add Export
+              </Link>
+            </nav>
+
+            {/* Auth Buttons */}
+            <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-base-300 bg-base-100">
+              {user ? (
+                <button 
+                  onClick={handleLogout} 
+                  className="btn btn-error w-full gap-2"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                  </svg>
+                  Logout
+                </button>
+              ) : (
+                <div className="space-y-2">
+                  <Link 
+                    to="/signin" 
+                    onClick={closeMobileMenu}
+                    className="btn btn-ghost w-full"
+                  >
+                    Login
+                  </Link>
+                  <Link 
+                    to="/signup" 
+                    onClick={closeMobileMenu}
+                    className="btn btn-primary w-full"
+                  >
+                    Register
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
-        </nav>
+        </div>
       </header>
 
 
