@@ -1,6 +1,6 @@
 # 🌍 Export Hub - Global Trade Management Platform
 
-**Live Site:** [Add your deployed URL here after deployment]
+**Live Site:** [https://exporthub-nayem.web.app/]
 
 **Demo Credentials (If needed):**
 - Email: demo@exporthub.com
