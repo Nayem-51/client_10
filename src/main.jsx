@@ -17,6 +17,10 @@ import DashboardHome from './pages/DashboardHome.jsx'
 import Profile from './pages/Profile.jsx'
 import ErrorPage from './pages/ErrorPage.jsx'
 import About from './pages/About.jsx'
+import Contact from './pages/Contact.jsx'
+import Blog from './pages/Blog.jsx'
+import PrivacyPolicy from './pages/PrivacyPolicy.jsx'
+import TermsOfService from './pages/TermsOfService.jsx'
 
 const router = createBrowserRouter([
   {
@@ -47,6 +51,22 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: <SignUp />,
+      },
+      {
+        path: "/contact",
+        element: <Contact />,
+      },
+      {
+        path: "/blog",
+        element: <Blog />,
+      },
+      {
+        path: "/privacy",
+        element: <PrivacyPolicy />,
+      },
+      {
+        path: "/terms",
+        element: <TermsOfService />,
       },
     ]
   },

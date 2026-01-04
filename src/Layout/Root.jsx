@@ -85,12 +85,26 @@ const Root = () => {
               </Link>
               
               {!user && (
-                <Link 
-                  to="/about" 
-                  className="btn btn-ghost btn-sm text-primary-content hover:bg-primary-focus"
-                >
-                  About
-                </Link>
+                <>
+                  <Link 
+                    to="/about" 
+                    className="btn btn-ghost btn-sm text-primary-content hover:bg-primary-focus"
+                  >
+                    About
+                  </Link>
+                  <Link 
+                    to="/contact" 
+                    className={`btn btn-ghost btn-sm text-primary-content hover:bg-primary-focus ${isActive('/contact')}`}
+                  >
+                    Contact
+                  </Link>
+                  <Link 
+                    to="/blog" 
+                    className={`btn btn-ghost btn-sm text-primary-content hover:bg-primary-focus ${isActive('/blog')}`}
+                  >
+                    Blog
+                  </Link>
+                </>
               )}
 
               {user && (
@@ -239,9 +253,17 @@ const Root = () => {
               </Link>
               
               {!user && (
-                <Link to="/about" onClick={closeMobileMenu} className="btn btn-ghost w-full justify-start gap-3">
-                  About
-                </Link>
+                <>
+                  <Link to="/about" onClick={closeMobileMenu} className="btn btn-ghost w-full justify-start gap-3">
+                    About
+                  </Link>
+                  <Link to="/contact" onClick={closeMobileMenu} className={`btn btn-ghost w-full justify-start gap-3 ${isActive('/contact')}`}>
+                    Contact
+                  </Link>
+                  <Link to="/blog" onClick={closeMobileMenu} className={`btn btn-ghost w-full justify-start gap-3 ${isActive('/blog')}`}>
+                    Blog
+                  </Link>
+                </>
               )}
 
               {user && (
@@ -304,6 +326,12 @@ const Root = () => {
                 <Link to="/dashboard" className="link link-hover text-xs sm:text-sm hover:text-primary transition-colors">
                   Dashboard
                 </Link>
+                <Link to="/blog" className="link link-hover text-xs sm:text-sm hover:text-primary transition-colors">
+                  Blog
+                </Link>
+                <Link to="/contact" className="link link-hover text-xs sm:text-sm hover:text-primary transition-colors">
+                  Contact
+                </Link>
               </nav>
             </div>
 
@@ -312,8 +340,8 @@ const Root = () => {
               <h6 className="text-sm sm:text-base font-bold uppercase tracking-wider">Support</h6>
               <nav className="flex flex-col space-y-1.5 sm:space-y-2">
                 <a href="/#faq" className="link link-hover text-xs sm:text-sm hover:text-primary transition-colors">FAQ</a>
-                <span className="text-xs sm:text-sm opacity-50 cursor-not-allowed">Terms of Service</span>
-                <span className="text-xs sm:text-sm opacity-50 cursor-not-allowed">Privacy Policy</span>
+                <Link to="/terms" className="link link-hover text-xs sm:text-sm hover:text-primary transition-colors">Terms of Service</Link>
+                <Link to="/privacy" className="link link-hover text-xs sm:text-sm hover:text-primary transition-colors">Privacy Policy</Link>
               </nav>
             </div>
 
