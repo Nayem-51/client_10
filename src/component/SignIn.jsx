@@ -30,7 +30,7 @@ function SignIn() {
 
   const handleDemoLogin = (role) => {
     if (role === 'user') {
-      setFormData({ email: 'demo@user.com', password: 'Password123!' });
+      setFormData({ email: 'demo123@gmail.com', password: 'Nayem1234@' });
     } else {
       setFormData({ email: 'admin@demo.com', password: 'Password123!' });
     }
@@ -249,4 +249,3 @@ function SignIn() {
 }
 
 export default SignIn;
-

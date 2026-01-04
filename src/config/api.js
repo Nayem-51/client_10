@@ -2,7 +2,7 @@
 // For development, use localhost
 // For production, use your deployed Vercel API URL
 
-export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 export const API_ENDPOINTS = {
   // Auth
