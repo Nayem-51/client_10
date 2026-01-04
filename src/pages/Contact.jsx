@@ -56,8 +56,8 @@ const Contact = () => {
                             </div>
                             <div>
                                 <h3 className="text-xl font-semibold mb-1">Call Us</h3>
-                                <p className="text-base-content/70">+1 (555) 123-4567</p>
-                                <p className="text-base-content/70">+1 (555) 987-6543</p>
+                                <p className="text-base-content/70">01903912471</p>
+                                <p className="text-base-content/70">01903912471</p>
                             </div>
                         </div>
 

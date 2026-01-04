@@ -22,10 +22,10 @@ function Home() {
       id: 2,
       title: "Global Trade Made Easy",
       desc: "Connect with suppliers worldwide. Manage your exports and imports efficiently.",
-      bg: "from-secondary to-accent",
-      btnText: "Add Your Product",
-      link: "/add-export",
-      btnClass: "btn-primary"
+      bg: "from-teal-400 via-blue-500 to-pink-500",
+      btnText: "Add Export",
+      link: "/dashboard/add-export",
+      btnClass: "btn-primary border-none shadow-xl hover:bg-white hover:text-primary"
     },
     {
       id: 3,
@@ -378,10 +378,10 @@ function Home() {
             </div>
 
             <div className="card-actions justify-start z-10">
-              <button className="btn bg-white text-indigo-600 hover:bg-yellow-300 hover:text-indigo-900 border-0 btn-lg font-bold px-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all rounded-full group">
-                Shop Now
+              <Link to="/all-products" className="btn bg-white text-indigo-600 hover:bg-yellow-300 hover:text-indigo-900 border-0 btn-lg font-bold px-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all rounded-full group">
+                All Products
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-              </button>
+              </Link>
             </div>
           </div>
         </div>
