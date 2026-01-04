@@ -80,7 +80,7 @@ function AddExport() {
 
       if (response.ok) {
         toast.success('Export added successfully to database!');
-        navigate('/my-exports');
+        navigate('/dashboard/my-exports');
       } else {
         setError(data.error || 'Failed to add product');
       }

@@ -165,7 +165,7 @@ function MyExports() {
             </svg>
             Download CSV
           </button>
-          <Link to="/add-export" className="btn btn-primary btn-sm">
+          <Link to="/dashboard/add-export" className="btn btn-primary btn-sm">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
             </svg>
@@ -183,7 +183,7 @@ function MyExports() {
       {products.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-2xl mb-4">No exports yet</p>
-          <Link to="/add-export" className="btn btn-primary">
+          <Link to="/dashboard/add-export" className="btn btn-primary">
             Create Your First Export
           </Link>
         </div>

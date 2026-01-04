@@ -28,10 +28,6 @@ function MyImports() {
       const data = await response.json();
 
       if (response.ok) {
-        console.log('Imports data:', data.data);
-        data.data?.forEach(item => {
-          console.log('Import item productId:', item.productId);
-        });
         setImports(data.data || []);
       } else {
         setError(data.error || 'Failed to fetch imports');
@@ -149,7 +145,6 @@ function MyImports() {
                       to={`/product/${importItem.productId}`}
                       className="btn btn-xs btn-info"
                       onClick={(e) => {
-                        console.log('Clicking See Details for productId:', importItem.productId);
                         if (!importItem.productId) {
                           e.preventDefault();
                           toast.error('Product ID not found. Please contact support.');
@@ -215,7 +210,6 @@ function MyImports() {
                     to={`/product/${importItem.productId}`}
                     className="btn btn-sm btn-info w-full"
                     onClick={(e) => {
-                      console.log('Mobile - Clicking See Details for productId:', importItem.productId);
                       if (!importItem.productId) {
                         e.preventDefault();
                         toast.error('Product ID not found. Please contact support.');
