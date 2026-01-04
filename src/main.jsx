@@ -12,31 +12,29 @@ import ProductDetails from './pages/ProductDetails.jsx'
 import SignIn from './component/SignIn.jsx'
 import SignUp from './component/SignUp.jsx'
 import PrivateRoute from './component/PrivateRoute.jsx'
+import DashboardLayout from './Layout/DashboardLayout.jsx'
+import DashboardHome from './pages/DashboardHome.jsx'
+import Profile from './pages/Profile.jsx'
+import ErrorPage from './pages/ErrorPage.jsx'
+import About from './pages/About.jsx'
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
         element: <Home />,
       },
       {
+        path: "/about",
+        element: <About />,
+      },
+      {
         path: "/all-products",
         element: <AllProducts />,
-      },
-      {
-        path: "/my-exports",
-        element: <PrivateRoute><MyExports /></PrivateRoute>,
-      },
-      {
-        path: "/my-imports",
-        element: <PrivateRoute><MyImports /></PrivateRoute>,
-      },
-      {
-        path: "/add-export",
-        element: <PrivateRoute><AddExport /></PrivateRoute>,
       },
       {
         path: "/product/:id",
@@ -52,6 +50,32 @@ const router = createBrowserRouter([
       },
     ]
   },
+  {
+    path: "/dashboard",
+    element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
+    children: [
+      {
+        index: true,
+        element: <DashboardHome />,
+      },
+      {
+        path: "my-exports",
+        element: <MyExports />,
+      },
+      {
+        path: "my-imports",
+        element: <MyImports />,
+      },
+      {
+        path: "add-export",
+        element: <AddExport />,
+      },
+      {
+        path: "profile",
+        element: <Profile />,
+      },
+    ]
+  }
 ]);
 
 createRoot(document.getElementById('root')).render(

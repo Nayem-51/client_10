@@ -54,7 +54,7 @@ const Root = () => {
         theme={theme === 'dark' ? 'dark' : 'light'}
       />
       {/* Header - Logo + Navigation with Hamburger Menu */}
-      <header className="bg-base-100 shadow-lg sticky top-0 z-50">
+      <header className="bg-primary text-primary-content shadow-lg sticky top-0 z-50">
         <div className="navbar px-3 sm:px-4 lg:px-8 py-2 sm:py-3 max-w-[1920px] mx-auto">
           {/* Left Side - Logo (Desktop Only) */}
           <div className="flex-1 lg:flex-none">
@@ -62,9 +62,9 @@ const Root = () => {
               <img 
                 src="/export_logo.jpeg" 
                 alt="Export Hub Logo" 
-                className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg"
+                className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg border-2 border-primary-content/20"
               />
-              <span className="text-lg sm:text-xl font-bold text-primary">Export Hub</span>
+              <span className="text-lg sm:text-xl font-bold">Export Hub</span>
             </Link>
           </div>
 
@@ -72,29 +72,35 @@ const Root = () => {
           <div className="flex-1 hidden lg:flex justify-center">
             <nav className="flex items-center gap-1">
               <Link 
+                to="/" 
+                className={`btn btn-ghost btn-sm text-primary-content hover:bg-primary-focus ${isActive('/')}`}
+              >
+                Home
+              </Link>
+              <Link 
                 to="/all-products" 
-                className={`btn btn-ghost btn-sm ${isActive('/all-products')}`}
+                className={`btn btn-ghost btn-sm text-primary-content hover:bg-primary-focus ${isActive('/all-products')}`}
               >
                 All Products
               </Link>
-              <Link 
-                to="/my-exports" 
-                className={`btn btn-ghost btn-sm ${isActive('/my-exports')}`}
-              >
-                My Exports
-              </Link>
-              <Link 
-                to="/my-imports" 
-                className={`btn btn-ghost btn-sm ${isActive('/my-imports')}`}
-              >
-                My Imports
-              </Link>
-              <Link 
-                to="/add-export" 
-                className={`btn btn-ghost btn-sm ${isActive('/add-export')}`}
-              >
-                Add Export
-              </Link>
+              
+              {!user && (
+                <Link 
+                  to="/about" 
+                  className="btn btn-ghost btn-sm text-primary-content hover:bg-primary-focus"
+                >
+                  About
+                </Link>
+              )}
+
+              {user && (
+                <Link 
+                  to="/dashboard" 
+                  className={`btn btn-ghost btn-sm text-primary-content hover:bg-primary-focus ${isActive('/dashboard')}`}
+                >
+                  Dashboard
+                </Link>
+              )}
             </nav>
           </div>
 
@@ -104,7 +110,7 @@ const Root = () => {
               {/* Theme Toggle */}
               <button 
                 onClick={toggleTheme}
-                className="btn btn-ghost btn-circle btn-sm"
+                className="btn btn-ghost btn-circle btn-sm text-primary-content hover:bg-primary-focus"
                 aria-label="Toggle theme"
               >
                 {theme === 'light' ? (
@@ -119,42 +125,38 @@ const Root = () => {
               </button>
 
               {user ? (
-                <>
-                  {/* User Avatar */}
-                  <div className="avatar">
-                    <div className="w-9 h-9 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                <div className="dropdown dropdown-end">
+                  <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                    <div className="w-10 h-10 rounded-full border-2 border-primary-content">
                       {user.image ? (
-                        <img 
-                          src={user.image} 
-                          alt={user.name || 'User'} 
-                          referrerPolicy="no-referrer"
-                        />
+                        <img src={user.image} alt={user.name} referrerPolicy="no-referrer" />
                       ) : (
-                        <div className="bg-primary text-primary-content w-full h-full flex items-center justify-center text-base font-bold">
-                          {user.name?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || 'U'}
+                        <div className="bg-primary-focus text-primary-content w-full h-full flex items-center justify-center text-lg font-bold">
+                          {user.name?.charAt(0).toUpperCase() || 'U'}
                         </div>
                       )}
                     </div>
                   </div>
-                  
-                  {/* Logout Button */}
-                  <button 
-                    onClick={handleLogout} 
-                    className="btn btn-error btn-sm"
-                  >
-                    Logout
-                  </button>
-                </>
+                  <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 text-base-content">
+                    <li>
+                      <Link to="/dashboard/profile" className="justify-between">
+                        Profile
+                        <span className="badge">New</span>
+                      </Link>
+                    </li>
+                    <li><a>Settings</a></li>
+                    <li><button onClick={handleLogout}>Logout</button></li>
+                  </ul>
+                </div>
               ) : (
-                <>
-                  {/* Login/Register buttons */}
-                  <Link to="/signin" className="btn btn-ghost btn-sm">
+                <div className="flex items-center gap-2">
+                  <Link to="/signin" className="btn btn-ghost btn-sm text-primary-content hover:bg-primary-focus">
                     Login
                   </Link>
-                  <Link to="/signup" className="btn btn-primary btn-sm">
+                  <Link to="/signup" className="btn bg-white text-primary btn-sm border-none hover:bg-gray-100">
                     Register
                   </Link>
-                </>
+                </div>
               )}
             </div>
           </div>
@@ -162,11 +164,9 @@ const Root = () => {
           {/* Mobile - Right Side with Hamburger */}
           <div className="flex-none lg:hidden">
             <div className="flex items-center gap-2">
-              {/* Theme Toggle Mobile */}
               <button 
                 onClick={toggleTheme}
-                className="btn btn-ghost btn-circle btn-sm"
-                aria-label="Toggle theme"
+                className="btn btn-ghost btn-circle btn-sm text-primary-content"
               >
                 {theme === 'light' ? (
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -179,21 +179,13 @@ const Root = () => {
                 )}
               </button>
 
-              {/* Hamburger Menu Button */}
               <button 
                 onClick={toggleMobileMenu}
-                className="btn btn-ghost btn-square btn-sm"
-                aria-label="Toggle menu"
+                className="btn btn-ghost btn-square btn-sm text-primary-content"
               >
-                {isMobileMenuOpen ? (
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                ) : (
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  </svg>
-                )}
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
               </button>
             </div>
           </div>
@@ -201,50 +193,31 @@ const Root = () => {
 
         {/* Mobile Drawer Menu */}
         <div className={`lg:hidden fixed inset-0 z-50 transition-all duration-300 ${isMobileMenuOpen ? 'visible' : 'invisible'}`}>
-          {/* Overlay */}
           <div 
-            className={`absolute inset-0 bg-black transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-50' : 'opacity-0'}`}
+            className={`absolute inset-0 bg-black/50 transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0'}`}
             onClick={closeMobileMenu}
           ></div>
           
-          {/* Drawer */}
           <div className={`absolute right-0 top-0 h-full w-72 bg-base-100 shadow-2xl transform transition-transform duration-300 ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-            {/* Drawer Header */}
-            <div className="flex items-center justify-between p-4 border-b border-base-300">
-              <div className="flex items-center gap-2">
-                <img 
-                  src="/export_logo.jpeg" 
-                  alt="Export Hub Logo" 
-                  className="h-8 w-8 rounded-lg"
-                />
-                <span className="text-lg font-bold text-primary">Menu</span>
-              </div>
-              <button 
-                onClick={closeMobileMenu}
-                className="btn btn-ghost btn-circle btn-sm"
-                aria-label="Close menu"
-              >
+            <div className="flex items-center justify-between p-4 border-b border-base-300 bg-primary text-primary-content">
+              <span className="text-lg font-bold">Menu</span>
+              <button onClick={closeMobileMenu} className="btn btn-ghost btn-circle btn-sm text-primary-content">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
 
-            {/* User Info */}
             {user && (
-              <div className="p-4 border-b border-base-300">
+              <div className="p-4 border-b border-base-300 bg-base-100 text-base-content">
                 <div className="flex items-center gap-3">
                   <div className="avatar">
                     <div className="w-12 h-12 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                      {user.image ? (
-                        <img 
-                          src={user.image} 
-                          alt={user.name || 'User'} 
-                          referrerPolicy="no-referrer"
-                        />
+                       {user.image ? (
+                        <img src={user.image} alt={user.name} referrerPolicy="no-referrer" />
                       ) : (
                         <div className="bg-primary text-primary-content w-full h-full flex items-center justify-center text-xl font-bold">
-                          {user.name?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || 'U'}
+                          {user.name?.charAt(0).toUpperCase() || 'U'}
                         </div>
                       )}
                     </div>
@@ -257,89 +230,43 @@ const Root = () => {
               </div>
             )}
 
-            {/* Navigation Links */}
-            <nav className="p-4 space-y-2">
-              <Link 
-                to="/all-products" 
-                onClick={closeMobileMenu}
-                className={`btn btn-ghost w-full justify-start gap-3 ${isActive('/all-products')}`}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                </svg>
+            <nav className="p-4 space-y-2 text-base-content overflow-y-auto max-h-[calc(100vh-180px)]">
+              <Link to="/" onClick={closeMobileMenu} className={`btn btn-ghost w-full justify-start gap-3 ${isActive('/')}`}>
+                Home
+              </Link>
+              <Link to="/all-products" onClick={closeMobileMenu} className={`btn btn-ghost w-full justify-start gap-3 ${isActive('/all-products')}`}>
                 All Products
               </Link>
               
-              <Link 
-                to="/my-exports" 
-                onClick={closeMobileMenu}
-                className={`btn btn-ghost w-full justify-start gap-3 ${isActive('/my-exports')}`}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
-                </svg>
-                My Exports
-              </Link>
-              
-              <Link 
-                to="/my-imports" 
-                onClick={closeMobileMenu}
-                className={`btn btn-ghost w-full justify-start gap-3 ${isActive('/my-imports')}`}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H3" />
-                </svg>
-                My Imports
-              </Link>
-              
-              <Link 
-                to="/add-export" 
-                onClick={closeMobileMenu}
-                className={`btn btn-ghost w-full justify-start gap-3 ${isActive('/add-export')}`}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                </svg>
-                Add Export
-              </Link>
+              {!user && (
+                <Link to="/about" onClick={closeMobileMenu} className="btn btn-ghost w-full justify-start gap-3">
+                  About
+                </Link>
+              )}
+
+              {user && (
+                <Link to="/dashboard" onClick={closeMobileMenu} className={`btn btn-ghost w-full justify-start gap-3 ${isActive('/dashboard')}`}>
+                  Dashboard
+                </Link>
+              )}
             </nav>
 
-            {/* Auth Buttons */}
             <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-base-300 bg-base-100">
               {user ? (
-                <button 
-                  onClick={handleLogout} 
-                  className="btn btn-error w-full gap-2"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                  </svg>
+                <button onClick={handleLogout} className="btn btn-error w-full gap-2 text-white">
                   Logout
                 </button>
               ) : (
-                <div className="space-y-2">
-                  <Link 
-                    to="/signin" 
-                    onClick={closeMobileMenu}
-                    className="btn btn-ghost w-full"
-                  >
-                    Login
-                  </Link>
-                  <Link 
-                    to="/signup" 
-                    onClick={closeMobileMenu}
-                    className="btn btn-primary w-full"
-                  >
-                    Register
-                  </Link>
+                <div className="grid grid-cols-2 gap-2">
+                  <Link to="/signin" onClick={closeMobileMenu} className="btn btn-outline btn-primary">Login</Link>
+                  <Link to="/signup" onClick={closeMobileMenu} className="btn btn-primary">Register</Link>
                 </div>
               )}
             </div>
           </div>
         </div>
       </header>
-
-
+      
       {/* Main Content */}
       <main className="container mx-auto px-2 sm:px-4 py-4 sm:py-6 max-w-[1920px]">
         <Outlet />
@@ -374,14 +301,8 @@ const Root = () => {
                 <Link to="/all-products" className="link link-hover text-xs sm:text-sm hover:text-primary transition-colors">
                   All Products
                 </Link>
-                <Link to="/my-exports" className="link link-hover text-xs sm:text-sm hover:text-primary transition-colors">
-                  My Exports
-                </Link>
-                <Link to="/my-imports" className="link link-hover text-xs sm:text-sm hover:text-primary transition-colors">
-                  My Imports
-                </Link>
-                <Link to="/add-export" className="link link-hover text-xs sm:text-sm hover:text-primary transition-colors">
-                  Add Export
+                <Link to="/dashboard" className="link link-hover text-xs sm:text-sm hover:text-primary transition-colors">
+                  Dashboard
                 </Link>
               </nav>
             </div>
@@ -390,10 +311,9 @@ const Root = () => {
             <div className="space-y-3 sm:space-y-4">
               <h6 className="text-sm sm:text-base font-bold uppercase tracking-wider">Support</h6>
               <nav className="flex flex-col space-y-1.5 sm:space-y-2">
-                <a className="link link-hover text-xs sm:text-sm hover:text-primary transition-colors">Help Center</a>
-                <a className="link link-hover text-xs sm:text-sm hover:text-primary transition-colors">Terms of Service</a>
-                <a className="link link-hover text-xs sm:text-sm hover:text-primary transition-colors">Privacy Policy</a>
-                <a className="link link-hover text-xs sm:text-sm hover:text-primary transition-colors">FAQ</a>
+                <a href="/#faq" className="link link-hover text-xs sm:text-sm hover:text-primary transition-colors">FAQ</a>
+                <span className="text-xs sm:text-sm opacity-50 cursor-not-allowed">Terms of Service</span>
+                <span className="text-xs sm:text-sm opacity-50 cursor-not-allowed">Privacy Policy</span>
               </nav>
             </div>
 
@@ -401,15 +321,15 @@ const Root = () => {
             <div className="space-y-3 sm:space-y-4">
               <h6 className="text-sm sm:text-base font-bold uppercase tracking-wider">Contact Us</h6>
               <div className="flex flex-col space-y-2 sm:space-y-3">
-                <a href="mailto:info@exporthub.com" className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm hover:text-primary transition-colors group">
+                <a href="nayem20talukdar@gmail.com" className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm hover:text-primary transition-colors group">
                   <div className="shrink-0 w-7 h-7 sm:w-8 sm:h-8 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                   </div>
-                  <span className="break-all">info@exporthub.com</span>
+                  <span className="break-all">nayem20talukdar@gmail.com</span>
                 </a>
-                <a href="tel:+8801234567890" className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm hover:text-primary transition-colors group">
+                <a href="tel:+8801903912471" className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm hover:text-primary transition-colors group">
                   <div className="shrink-0 w-7 h-7 sm:w-8 sm:h-8 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -449,7 +369,7 @@ const Root = () => {
               <div className="flex items-center gap-1.5 sm:gap-2 order-1 md:order-2">
                 <span className="text-xs sm:text-sm font-medium mr-1 sm:mr-2 hidden sm:inline">Follow Us:</span>
                 <a 
-                  href="https://facebook.com" 
+                  href="https://www.facebook.com/md.nayemislam.9693001" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="btn btn-ghost btn-xs sm:btn-sm btn-circle hover:bg-primary hover:text-primary-content transition-all"
@@ -471,7 +391,7 @@ const Root = () => {
                   </svg>
                 </a>
                 <a 
-                  href="https://linkedin.com" 
+                  href="https://www.linkedin.com/in/nayem-talukdar" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="btn btn-ghost btn-xs sm:btn-sm btn-circle hover:bg-primary hover:text-primary-content transition-all"

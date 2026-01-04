@@ -2,7 +2,7 @@
 // For development, use localhost
 // For production, use your deployed Vercel API URL
 
-export const API_URL = import.meta.env.VITE_API_URL || 'https://server-10-livid.vercel.app';
+export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 export const API_ENDPOINTS = {
   // Auth
@@ -20,5 +20,8 @@ export const API_ENDPOINTS = {
   
   // Single Product
   PRODUCT_BY_ID: (id) => `${API_URL}/products/${id}`,
+
+  // Dashboard
+  DASHBOARD_STATS: (email) => `${API_URL}/dashboard/stats/${email}`,
 };
 
