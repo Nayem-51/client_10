@@ -334,33 +334,54 @@ function Home() {
         </div>
       </section>
 
-      {/* 6. Deal of the Day (New) */}
-      <section className="py-12">
-        <div className="card lg:card-side bg-secondary text-secondary-content shadow-xl overflow-hidden">
-          <figure className="lg:w-1/2 h-64 lg:h-auto relative">
-             <img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=800&q=80" alt="Deal" className="w-full h-full object-cover" />
-             <div className="absolute top-4 left-4 badge badge-accent p-3">Limited Time Offer</div>
+      {/* 6. Deal of the Day (New) - Polished */}
+      <section className="py-16 px-4">
+        <div className="card lg:card-side bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 text-white shadow-2xl overflow-hidden rounded-3xl transform hover:shadow-3xl transition-all duration-300">
+          <figure className="lg:w-1/2 h-96 lg:h-auto relative overflow-hidden group">
+             <img 
+                src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=800&q=80" 
+                alt="Deal" 
+                className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" 
+             />
+             <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
+             <div className="absolute top-6 left-6 badge badge-warning gap-2 p-4 text-sm font-bold uppercase tracking-wider shadow-lg animate-pulse border-none text-warning-content">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-4 h-4 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Limited Time Offer
+             </div>
           </figure>
-          <div className="card-body lg:w-1/2 justify-center">
-            <h2 className="card-title text-3xl font-bold mb-2">Deal of the Day! 50% Off</h2>
-            <p className="text-lg opacity-90 mb-6">Premium Textile Bulk orders get flat 50% discount this week. Don't miss out on this exclusive opportunity to stock up.</p>
-            <div className="card-actions justify-start">
-              <button className="btn btn-accent btn-wide transform hover:scale-105">Shop Now</button>
-            </div>
+          <div className="card-body lg:w-1/2 justify-center p-10 lg:p-14 relative overflow-hidden">
+            {/* Background pattern */}
+            <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-white/10 blur-3xl"></div>
+            <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-40 h-40 rounded-full bg-white/10 blur-3xl"></div>
+
+            <h2 className="card-title text-4xl lg:text-5xl font-extrabold mb-4 leading-tight z-10">
+              Deal of the Day!<br/>
+              <span className="text-yellow-300 drop-shadow-md">50% Off</span>
+            </h2>
+            <p className="text-lg text-indigo-50 mb-8 leading-relaxed z-10">
+              Premium Textile Bulk orders get flat 50% discount this week. Don't miss out on this exclusive opportunity to stock up your inventory with high-quality materials.
+            </p>
             
-             <div className="flex gap-4 mt-6">
-              <div className="flex flex-col p-2 bg-secondary-focus rounded-box text-neutral-content items-center">
-                <span className="font-mono text-xl">10</span>
-                <span className="text-xs">hours</span>
-              </div> 
-              <div className="flex flex-col p-2 bg-secondary-focus rounded-box text-neutral-content items-center">
-                <span className="font-mono text-xl">24</span>
-                <span className="text-xs">min</span>
-              </div> 
-              <div className="flex flex-col p-2 bg-secondary-focus rounded-box text-neutral-content items-center">
-                <span className="font-mono text-xl">49</span>
-                <span className="text-xs">sec</span>
-              </div>
+            <div className="grid grid-flow-col gap-4 sm:gap-6 text-center auto-cols-max mb-10 z-10">
+               <div className="flex flex-col p-3 sm:p-4 bg-white/20 backdrop-blur-md rounded-2xl border border-white/20 text-white min-w-[80px] sm:min-w-[90px]">
+                 <span className="font-mono text-3xl sm:text-4xl font-bold">10</span>
+                 <span className="text-xs uppercase tracking-widest mt-1 opacity-90">Hours</span>
+               </div> 
+               <div className="flex flex-col p-3 sm:p-4 bg-white/20 backdrop-blur-md rounded-2xl border border-white/20 text-white min-w-[80px] sm:min-w-[90px]">
+                 <span className="font-mono text-3xl sm:text-4xl font-bold">24</span>
+                 <span className="text-xs uppercase tracking-widest mt-1 opacity-90">Min</span>
+               </div> 
+               <div className="flex flex-col p-3 sm:p-4 bg-white/20 backdrop-blur-md rounded-2xl border border-white/20 text-white min-w-[80px] sm:min-w-[90px]">
+                 <span className="font-mono text-3xl sm:text-4xl font-bold">49</span>
+                 <span className="text-xs uppercase tracking-widest mt-1 opacity-90">Sec</span>
+               </div>
+            </div>
+
+            <div className="card-actions justify-start z-10">
+              <button className="btn bg-white text-indigo-600 hover:bg-yellow-300 hover:text-indigo-900 border-0 btn-lg font-bold px-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all rounded-full group">
+                Shop Now
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+              </button>
             </div>
           </div>
         </div>
